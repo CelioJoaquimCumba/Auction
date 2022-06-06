@@ -2,10 +2,10 @@ package mz.ac.isutc.i33.auction.Bid;
 
 public class Bid {
     String username;
-    String bid;
+    Double bid;
     String product_id;
 
-    public Bid(String username, String bid, String product_id) {
+    public Bid(String username, Double bid, String product_id) {
         this.username = username;
         this.bid = bid;
         this.product_id = product_id;
@@ -19,11 +19,11 @@ public class Bid {
         this.username = username;
     }
 
-    public String getBid() {
+    public Double getBid() {
         return bid;
     }
 
-    public void setBid(String bid) {
+    public void setBid(Double bid) {
         this.bid = bid;
     }
 

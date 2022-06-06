@@ -24,14 +24,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="username"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="from:"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="celio"/>
         </LinearLayout>
 
        <LinearLayout
@@ -61,7 +53,7 @@
          />
     <!-- description fields  -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
@@ -71,6 +63,7 @@
             android:text="Description:"/>
             />
         <TextView
+            android:id="@+id/description_bid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="italic"
@@ -92,6 +85,7 @@
                 android:text="Bid:"/>
 
             <EditText
+                android:id="@+id/bid_proposal_bid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="bid (mzn)"
@@ -100,6 +94,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/bid_button_bid"
             android:layout_weight="20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
