@@ -27,15 +27,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="80"
-            android:text="Email" />
+            android:text="Username" />
 
         <EditText
-            android:id="@+id/email_login"
+            android:id="@+id/username_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="20"
-            android:hint="Insira o seu email"
-            android:inputType="textEmailAddress" />
+            android:hint="Insira o seu username"
+            android:inputType="text" />
     </LinearLayout>
 
     <!-- Password -->
