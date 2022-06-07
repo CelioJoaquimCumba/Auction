@@ -49,17 +49,17 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
         TextView tvHighestBid = (TextView) convertView.findViewById(R.id.highest_bid);
         Button button = (Button) convertView.findViewById(R.id.bid_button_bid);
         EditText bid_proposal = convertView.findViewById(R.id.bid_proposal_bid);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String bid_proposal_text = bid_proposal.getText().toString();
 
-                if ( bid_proposal_text.trim() != "" && Double.parseDouble(bid_proposal_text)>Double.parseDouble(highest_bid) ){
+                if (!bid_proposal_text.trim().equals("") && Double.parseDouble(bid_proposal_text)>Double.parseDouble(highest_bid) ){
                     bid_post.addBid(new Bid("unknown",Double.parseDouble(bid_proposal_text),"1"));
+
                     tvDescription.setText("Oh well");
-
-
                 }
             }
         });

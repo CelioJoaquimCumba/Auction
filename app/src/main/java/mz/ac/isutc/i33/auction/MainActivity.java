@@ -1,5 +1,6 @@
 package mz.ac.isutc.i33.auction;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
@@ -9,6 +10,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         pager.addOnPageChangeListener( new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+        //gives the action for the tabs states
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -61,11 +66,35 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        /*Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        //some coooment
-        startActivity(intent);*/
+//        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        //some coooment
+//        startActivity(intent);
+
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.new_bid:
+                Toast.makeText(MainActivity.this, "Going to create bid",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, NewBidActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    //Makes the user confirm if he wants to exit from the apliccation
     boolean doubleBackToExitPressedOnce = false;
 
     @Override
