@@ -9,19 +9,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import mz.ac.isutc.i33.auction.models.User;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText username, email, password, passwordConfirmation;
     Button register_button;
-
-//    FirebaseDatabase rootNode;
-//    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,23 +40,40 @@ public class RegisterActivity extends AppCompatActivity {
         register_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username_txt = username.getText().toString();
-                String email_txt = email.getText().toString();
-                String password_txt = password.getText().toString();
+                String username_txt = username.getText().toString().trim();
+                String email_txt = email.getText().toString().trim();
+                String password_txt = password.getText().toString().trim();
                 String passwordConfirmation_txt = passwordConfirmation.getText().toString();
                 if(validFields(
-                        username_txt,
-                        email_txt,
-                        password_txt,
-                        passwordConfirmation_txt
+                        username,
+                        email,
+                        password,
+                        passwordConfirmation
                 )){
                     FirebaseDatabase database = FirebaseDatabase.getInstance("https://auction-a4883-default-rtdb.firebaseio.com/");
-                    DatabaseReference myRef = database.getReference("users");
+                    DatabaseReference reference = database.getReference("users");
+                    Query user = reference.orderByChild("username").equalTo(username_txt);
+                    user.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if( dataSnapshot.exists() ) {
+                                //exist
+                                Toast.makeText(getApplicationContext(),"A user with this username already exists",Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                //dont exist
+                                User _user = new User(username_txt,email_txt,password_txt);
+                                reference.child(username_txt).setValue(_user);
+                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        }
 
-                    User user = new User(username_txt,email_txt,password_txt);
-                    myRef.child(username_txt).setValue(user);
-                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                    startActivity(intent);
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
         });
@@ -64,24 +83,29 @@ public class RegisterActivity extends AppCompatActivity {
     private  boolean isValidEmail(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
-    private boolean validFields(String username, String email, String password, String passwordConfirmation){
-        if( username.trim().equals("") ){
+    private boolean validFields(EditText username_ET, EditText email_ET, EditText password_ET, EditText passwordConfirmation_ET){
+        String username = username_ET.getText().toString().trim();
+        String email = email_ET.getText().toString().trim();
+        String password = password_ET.getText().toString().trim();
+        String passwordConfirmation = passwordConfirmation_ET.getText().toString();
+        if( username.equals("") ){
             return false;
         }
-        if( email.trim().equals("") ){
+        if( email.equals("") ){
+            email_ET.setError("Email is empty");
             return false;
         }
-        if( password.trim().equals("") ){
+        if( password.equals("") ){
+            password_ET.setError("Password is empty");
             return false;
         }
         if( !password.equals(passwordConfirmation) ){
+            passwordConfirmation_ET.setError("Passwords not matching");
             return false;
         }
 
         if( !isValidEmail(email) ) {
-            Toast.makeText(getApplicationContext(),
-                    "One of your fields is not well putted. Guess which :)",
-                    Toast.LENGTH_LONG).show();
+            email_ET.setError("Email is not valid");
             return false;
         }
         return true;

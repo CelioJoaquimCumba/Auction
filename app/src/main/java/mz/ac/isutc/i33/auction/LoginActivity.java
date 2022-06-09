@@ -37,8 +37,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if ( validFields(
-                        username.getText().toString(),
-                        password.getText().toString())
+                        username,
+                        password)
                         && userExists(
                                 username.getText().toString().trim(),
                                 password.getText().toString().trim() )
@@ -49,6 +49,24 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+    //Validade is all the fields are field and the input of every each is valid
+    //probably will need more enhancement
+    private boolean validFields(EditText username_ET, EditText password_ET){
+        String username = username_ET.getText().toString().trim();
+        String password = password_ET.getText().toString().trim();
+        if(
+                username.equals("")
+        ) {
+            username_ET.setError("Insira o username");
+            return false;
+        }
+        if( password.equals("")){
+            password_ET.setError("Insira a password");
+            return false;
+        }
+        return true;
+    }
+
     private boolean userExists(String username, String password){
         DatabaseReference reference = FirebaseDatabase.getInstance("https://auction-a4883-default-rtdb.firebaseio.com/").getReference("users");
         Query user = reference.orderByChild("username").equalTo(username);
@@ -63,11 +81,11 @@ public class LoginActivity extends AppCompatActivity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         startActivity(intent);
                     }else{
-                        //TODO
+                        Toast.makeText(getApplicationContext(), "Credentials don't match",Toast.LENGTH_SHORT).show();
 
                     }
                 }else{
-                    //TODO
+                    Toast.makeText(getApplicationContext(), "This user is inexistent, register your account",Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -84,19 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //Validade is all the fields are field and the input of every each is valid
-    //probably will need more enhancement
-    private boolean validFields(String username, String password){
-        if(
-                username.trim() == "" || password.trim() == ""
-        ) {
-            Toast.makeText(getApplicationContext(),
-                    "One of your fields is not well putted. Guess which :)",
-                    Toast.LENGTH_LONG).show();
-            return false;
-        }
-        return true;
-    }
+
 
 
     boolean doubleBackToExitPressedOnce = false;
