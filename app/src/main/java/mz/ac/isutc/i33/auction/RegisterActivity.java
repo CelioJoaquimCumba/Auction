@@ -40,14 +40,13 @@ public class RegisterActivity extends AppCompatActivity {
 
         register_button = findViewById(R.id.register_button_register);
 
-
         register_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String username_txt = username.getText().toString().trim();
                 String email_txt = email.getText().toString().trim();
                 String password_txt = password.getText().toString().trim();
-                String passwordConfirmation_txt = passwordConfirmation.getText().toString();
+                //String passwordConfirmation_txt = passwordConfirmation.getText().toString();
                 if(validFields(
                         username,
                         email,
@@ -73,7 +72,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -108,7 +106,6 @@ public class RegisterActivity extends AppCompatActivity {
             passwordConfirmation_ET.setError("Passwords not matching");
             return false;
         }
-
         if( !isValidEmail(email) ) {
             email_ET.setError("Email is not valid");
             return false;

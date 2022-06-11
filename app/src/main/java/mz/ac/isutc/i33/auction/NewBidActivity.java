@@ -67,6 +67,7 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
             if(validation()){
                 Intent intent = new Intent(NewBidActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
                 startActivity(intent);
             }
         }else if(load_image_button.equals(v)){

@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                                 username.getText().toString().trim(),
                                 password.getText().toString().trim() )
                 ){
-
+                    save(null);
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -112,7 +112,31 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void save(View v){
+        //TODO
+        String text = "user";
+        FileOutputStream fos = null;
 
+        try {
+            FileOutputStream fileOutputStream = fos = openFileOutput(MainActivity.FILE_NAME, MODE_PRIVATE);
+            fos.write(text.getBytes());
+
+            Toast.makeText(getApplicationContext(), fos.toString(),Toast.LENGTH_SHORT);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if ( fos != null ){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
 
 
     boolean doubleBackToExitPressedOnce = false;
