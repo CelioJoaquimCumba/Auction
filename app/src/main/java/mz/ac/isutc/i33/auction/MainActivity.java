@@ -13,10 +13,16 @@ import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +33,16 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager pager;
     private PagerAdapter pagerAdapter;
     private TabLayout tabLayout;
+    private boolean loggedIn=false;
+    public static final String FILE_NAME = "user.txt";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        load(null);
 
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(new HomeFragment());
@@ -64,12 +74,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        if( !loggedIn ){
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
 
-
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        //some coooment
-        startActivity(intent);
 
     }
 
@@ -114,6 +124,33 @@ public class MainActivity extends AppCompatActivity {
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
+    }
+    public void load(View v){
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput(MainActivity.FILE_NAME);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+            while ((text = br.readLine()) != null){
+                sb.append(text).append("\n");
+            }
+            Toast.makeText(getApplicationContext(), fis.toString(), Toast.LENGTH_SHORT).show();
+            loggedIn = true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if ( fis!= null ){
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }

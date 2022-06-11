@@ -19,6 +19,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import mz.ac.isutc.i33.auction.models.User;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -64,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 //dont exist
                                 User _user = new User(username_txt,email_txt,password_txt);
                                 reference.child(username_txt).setValue(_user);
+                                save(username);
                                 Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }
@@ -116,4 +121,31 @@ public class RegisterActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
+
+    public void save(View v){
+        //TODO
+        String text = "user";
+        FileOutputStream fos = null;
+
+        try {
+            FileOutputStream fileOutputStream = fos = openFileOutput(MainActivity.FILE_NAME, MODE_PRIVATE);
+            fos.write(text.getBytes());
+
+            Toast.makeText(getApplicationContext(), fos.toString(),Toast.LENGTH_SHORT);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if ( fos != null ){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
 }

@@ -19,6 +19,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+
 public class LoginActivity extends AppCompatActivity {
     EditText username=null, password=null;
     Button login_button;
@@ -43,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                                 username.getText().toString().trim(),
                                 password.getText().toString().trim() )
                 ){
+
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -125,5 +135,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }, 2000);
     }
+
+
 
 }
