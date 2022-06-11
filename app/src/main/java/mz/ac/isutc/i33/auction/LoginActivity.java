@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                                 username.getText().toString().trim(),
                                 password.getText().toString().trim() )
                 ){
-                    save(null);
+
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -87,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                     String passwordFromDB = dataSnapshot.child(username).child("password").getValue(String.class);
 
                     if(passwordFromDB.equals(password)){
+                        save(null);
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         startActivity(intent);
@@ -121,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
             FileOutputStream fileOutputStream = fos = openFileOutput(MainActivity.FILE_NAME, MODE_PRIVATE);
             fos.write(text.getBytes());
 
-            Toast.makeText(getApplicationContext(), fos.toString(),Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(), "Saved",Toast.LENGTH_SHORT);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
