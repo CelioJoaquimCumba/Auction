@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -44,6 +45,7 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
     Button load_image_button, register_button, date_button, time_button;
     ImageView imageView;
     EditText date, time,title,description,startingBid;
+    String username;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private Uri selectedImage;
     private String imageUri;
@@ -57,6 +59,13 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null){
+            username = extras.getString(MainActivity.USERNAME);
+        } else{
+            username = "unknown";
+        }
 
         setContentView(R.layout.activity_new_bid);
         //buttons initialization
@@ -126,6 +135,9 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
                         }
                         registerBidPostInfo();
                         progressBar.dismiss();
+                        Snackbar.make(findViewById(android.R.id.content), "Registro do artigo feito com sucesso", Snackbar.LENGTH_LONG).show();
+                        Intent intent = new Intent(NewBidActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -159,10 +171,10 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
         String endDate_txt = date.getText().toString();
         String endTime_txt = time.getText().toString();
         //TODO: remove this hardCode value
-        String owner = "celio";
+        String owner = username;
         ArrayList<Bid> bids = new ArrayList<Bid>();
         bids.add(new Bid(owner, Double.parseDouble(startingBid_txt),product_id));
-        Bid_post bid_post = new Bid_post(owner,title_txt,description_txt, startingBid_txt,endDate_txt,endTime_txt, bids, imageUri);
+        Bid_post bid_post = new Bid_post(product_id,owner,title_txt,description_txt, startingBid_txt,endDate_txt,endTime_txt, bids, imageUri);
         databaseReference.child(product_id).setValue(bid_post);
     }
 

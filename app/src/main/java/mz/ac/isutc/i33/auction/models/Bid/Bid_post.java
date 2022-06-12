@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Bid_post {
+    String id;
     String owner;
     String title;
     String description;
@@ -42,10 +43,11 @@ public class Bid_post {
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public Bid_post(String owner, String title, String description
+    public Bid_post(String id, String owner, String title, String description
             , String startingBid,String endDate, String endTime
             , ArrayList<Bid> bids,String imageUri
                     ) {
+        this.id = id;
         this.owner = owner;
         this.title = title;
         this.description = description;
@@ -60,7 +62,15 @@ public class Bid_post {
 
 
     }
+    public Bid_post(){
 
+    }
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
     public String getTitle() {
         return title;
     }
@@ -103,6 +113,7 @@ public class Bid_post {
     public void setHighest_bid(String highest_bid) {
         this.highest_bid = highest_bid;
     }
+
     public void addBid( Bid bid ){
         if( bids.get(0).getBid()<bid.getBid() ){
             this.bids.add(bid);

@@ -10,6 +10,9 @@ public class Bid {
         this.bid = bid;
         this.product_id = product_id;
     }
+    public Bid(){
+
+    }
 
     public String getUsername() {
         return username;

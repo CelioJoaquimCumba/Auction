@@ -8,8 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
@@ -21,11 +24,13 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
 
     private Context context;
     int resource;
+    DatabaseReference reference;
 
-    public BidListAdapter(Context context, int resource, ArrayList<Bid_post> objects) {
+    public BidListAdapter(Context context, int resource, ArrayList<Bid_post> objects, DatabaseReference reference) {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;
+        this.reference = reference;
     }
 
     @NonNull
@@ -54,12 +59,13 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
             public void onClick(View view) {
 
                 String bid_proposal_text = bid_proposal.getText().toString();
-
                 if (!bid_proposal_text.trim().equals("") && Double.parseDouble(bid_proposal_text)>Double.parseDouble(highest_bid) ){
-                    bid_post.addBid(new Bid("unknown",Double.parseDouble(bid_proposal_text),"1"));
-
-                    tvDescription.setText("Oh well");
+                    bid_post.addBid(new Bid(MainActivity.username,Double.parseDouble(bid_proposal_text),bid_post.getId()));
+                    reference.child(bid_post.getId()).setValue(bid_post);
+                }else{
+                    Toast.makeText(getContext(), "Proposta de leilao concluida sem sucesso! insira um valor maior que o apostado.", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
@@ -75,4 +81,5 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
         return convertView;
 
     }
+
 }

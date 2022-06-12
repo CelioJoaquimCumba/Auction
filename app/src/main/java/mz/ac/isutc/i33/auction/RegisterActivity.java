@@ -82,7 +82,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     public void save(View v){
         //TODO
-        String text = "user";
+        String text = username.getText().toString();
         FileOutputStream fos = null;
 
         try {

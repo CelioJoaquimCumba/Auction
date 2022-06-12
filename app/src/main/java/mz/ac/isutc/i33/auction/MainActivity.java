@@ -37,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private PagerAdapter pagerAdapter;
     private TabLayout tabLayout;
     private boolean loggedIn=false;
+    public static String username;
     public static final String FILE_NAME = "user.txt";
+    public static String USERNAME = "username";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -46,11 +48,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         load(null);
-        Toast.makeText(MainActivity.this, Boolean.toString(checkConnection()), Toast.LENGTH_LONG).show();
+
 
 
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(new HomeFragment());
+        fragmentList.add(new HomeFragment(username));
         fragmentList.add(new SearchFragment());
 
         tabLayout = findViewById(R.id.tab_layout);
@@ -90,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return true;
@@ -99,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.new_bid:
-                Toast.makeText(MainActivity.this, "Going to create bid",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, NewBidActivity.class);
+                intent.putExtra(USERNAME, username);
                 startActivity(intent);
                 return true;
             default:
@@ -141,8 +144,8 @@ public class MainActivity extends AppCompatActivity {
             while ((text = br.readLine()) != null){
                 sb.append(text).append("\n");
             }
-            Toast.makeText(getApplicationContext(), fis.toString(), Toast.LENGTH_SHORT).show();
             loggedIn = true;
+            username = sb.toString();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

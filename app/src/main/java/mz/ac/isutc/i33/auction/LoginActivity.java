@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void save(View v){
         //TODO
-        String text = "user";
+        String text = username.getText().toString();
         FileOutputStream fos = null;
 
         try {
