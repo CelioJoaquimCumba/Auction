@@ -28,10 +28,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     EditText username=null, password=null;
     Button login_button;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,25 +38,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         username = findViewById(R.id.username_login);
         password = findViewById(R.id.password_login);
-
         login_button = findViewById(R.id.login_button_login);
-
-        login_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ( validFields(
-                        username,
-                        password)
-                        && userExists(
-                                username.getText().toString().trim(),
-                                password.getText().toString().trim() )
-                ){
-
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-            }
-        });
+        login_button.setOnClickListener(this);
     }
     //Validade is all the fields are field and the input of every each is valid
     //probably will need more enhancement
@@ -162,5 +144,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if ( v.equals(login_button) ){
+            if ( validFields(
+                    username,
+                    password)
+                    && userExists(
+                    username.getText().toString().trim(),
+                    password.getText().toString().trim() )
+            ){
 
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        }
+    }
 }

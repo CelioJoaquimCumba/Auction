@@ -8,14 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
-import mz.ac.isutc.i33.auction.Bid.Bid;
-import mz.ac.isutc.i33.auction.Bid.Bid_post;
+import mz.ac.isutc.i33.auction.models.Bid.Bid;
+import mz.ac.isutc.i33.auction.models.Bid.Bid_post;
 
 public class BidListAdapter extends ArrayAdapter<Bid_post> {
     private static final String TAG = "PersonListAdapter";

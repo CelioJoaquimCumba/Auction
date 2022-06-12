@@ -5,20 +5,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import mz.ac.isutc.i33.auction.Bid.Bid;
-import mz.ac.isutc.i33.auction.Bid.Bid_post;
+import mz.ac.isutc.i33.auction.models.Bid.Bid;
+import mz.ac.isutc.i33.auction.models.Bid.Bid_post;
 import mz.ac.isutc.i33.auction.BidListAdapter;
 import mz.ac.isutc.i33.auction.R;
 
@@ -41,8 +38,8 @@ public class HomeFragment extends Fragment {
         bids.add(new Bid("Tomas",10.0,"1"));
         bids.add(new Bid("Cumba",24.0,"1"));
 
-        bid_posts.add(new Bid_post("Badass background","Celio",bids,"test1"));
-        bid_posts.add(new Bid_post("Absolutely nothing","Claudio",bids,"test2"));
+        bid_posts.add(new Bid_post("celio","Badass background","Celio","30","12/12/2022","12:30",bids,""));
+        bid_posts.add(new Bid_post("claudio","Absolutely nothing","Claudio","40","12/12/2022","12:30",bids,""));
 
 
 

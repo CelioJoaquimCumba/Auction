@@ -25,7 +25,7 @@ import java.io.IOException;
 
 import mz.ac.isutc.i33.auction.models.User;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     EditText username, email, password, passwordConfirmation;
     Button register_button;
 
@@ -40,46 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         register_button = findViewById(R.id.register_button_register);
 
-        register_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String username_txt = username.getText().toString().trim();
-                String email_txt = email.getText().toString().trim();
-                String password_txt = password.getText().toString().trim();
-                //String passwordConfirmation_txt = passwordConfirmation.getText().toString();
-                if(validFields(
-                        username,
-                        email,
-                        password,
-                        passwordConfirmation
-                )){
-                    FirebaseDatabase database = FirebaseDatabase.getInstance("https://auction-a4883-default-rtdb.firebaseio.com/");
-                    DatabaseReference reference = database.getReference("users");
-                    Query user = reference.orderByChild("username").equalTo(username_txt);
-                    user.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if( dataSnapshot.exists() ) {
-                                //exist
-                                Toast.makeText(getApplicationContext(),"A user with this username already exists",Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                //dont exist
-                                User _user = new User(username_txt,email_txt,password_txt);
-                                reference.child(username_txt).setValue(_user);
-                                save(username);
-                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-            }
-        });
+        register_button.setOnClickListener(this);
 
 
     }
@@ -143,6 +104,46 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
 
+    }
+    @Override
+    public void onClick(View v){
+        if( v.equals(register_button) ){
+            String username_txt = username.getText().toString().trim();
+            String email_txt = email.getText().toString().trim();
+            String password_txt = password.getText().toString().trim();
+            //String passwordConfirmation_txt = passwordConfirmation.getText().toString();
+            if(validFields(
+                    username,
+                    email,
+                    password,
+                    passwordConfirmation
+            )){
+                FirebaseDatabase database = FirebaseDatabase.getInstance("https://auction-a4883-default-rtdb.firebaseio.com/");
+                DatabaseReference reference = database.getReference("users");
+                Query user = reference.orderByChild("username").equalTo(username_txt);
+                user.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if( dataSnapshot.exists() ) {
+                            //exist
+                            Toast.makeText(getApplicationContext(),"A user with this username already exists",Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            //dont exist
+                            User _user = new User(username_txt,email_txt,password_txt);
+                            reference.child(username_txt).setValue(_user);
+                            save(username);
+                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        }
     }
 
 }

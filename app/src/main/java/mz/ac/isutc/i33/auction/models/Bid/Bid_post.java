@@ -1,22 +1,35 @@
-package mz.ac.isutc.i33.auction.Bid;
+package mz.ac.isutc.i33.auction.models.Bid;
 
 import android.os.Build;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Bid_post {
-    String title;
     String owner;
+    String title;
+    String description;
+    String startingBid;
+    String endDate;
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
+
+    String endTime;
     ArrayList<Bid> bids;
     String highest_bidder;
     String highest_bid;
-    String description;
+    String imageUri;
+
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void sort (){
@@ -29,25 +42,31 @@ public class Bid_post {
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public Bid_post(String title,String owner, ArrayList<Bid> bids, String description) {
-        this.title = title;
+    public Bid_post(String owner, String title, String description
+            , String startingBid,String endDate, String endTime
+            , ArrayList<Bid> bids,String imageUri
+                    ) {
         this.owner = owner;
+        this.title = title;
+        this.description = description;
+        this.startingBid = startingBid;
+        this.endDate = endDate;
+        this.endTime = endTime;
         this.bids = bids;
+        this.imageUri = imageUri;
         sort();
         this.highest_bidder = bids.get( bids.size()-1 ).username;
         this.highest_bid = bids.get( bids.size() -1 ).bid.toString();
-        this.description = description;
+
 
     }
 
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
-
     public String getDescription(){
         return this.description;
     }
@@ -60,7 +79,30 @@ public class Bid_post {
     public String getHighest_bid(){
         return bids.get( bids.size() -1 ).getBid().toString();
     }
-
+    public String getStartingBid() {
+        return startingBid;
+    }
+    public void setStartingBid(String startingBid) {
+        this.startingBid = startingBid;
+    }
+    public String getEndDate() {
+        return endDate;
+    }
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+    public String getEndTime() {
+        return endTime;
+    }
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+    public void setHighest_bidder(String highest_bidder) {
+        this.highest_bidder = highest_bidder;
+    }
+    public void setHighest_bid(String highest_bid) {
+        this.highest_bid = highest_bid;
+    }
     public void addBid( Bid bid ){
         if( bids.get(0).getBid()<bid.getBid() ){
             this.bids.add(bid);

@@ -1,4 +1,4 @@
-package mz.ac.isutc.i33.auction.Bid;
+package mz.ac.isutc.i33.auction.models.Bid;
 
 public class Bid {
     String username;
