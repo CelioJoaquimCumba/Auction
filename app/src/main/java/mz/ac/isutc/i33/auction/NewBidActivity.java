@@ -1,9 +1,11 @@
 package mz.ac.isutc.i33.auction;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,15 +17,30 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
 import java.net.InetSocketAddress;
 import java.util.Calendar;
+import java.util.UUID;
 
 public class NewBidActivity extends AppCompatActivity implements View.OnClickListener{
     Button load_image_button, register_button, date_button, time_button;
     ImageView imageView;
     EditText txtDate, txtTime;
     private int mYear, mMonth, mDay, mHour, mMinute;
+    private Uri selectedImage;
+
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +54,9 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
         time_button = findViewById(R.id.time_button_new_bid);
         txtTime = findViewById(R.id.ending_time_new_bid);
 
+        storage = FirebaseStorage.getInstance("gs://auction-a4883.appspot.com");
+        storageReference = storage.getReference();
+
         register_button.setOnClickListener(this);
 
         load_image_button.setOnClickListener(this);
@@ -44,6 +64,8 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
         date_button.setOnClickListener(this);
 
         time_button.setOnClickListener(this);
+
+
     }
 
 
@@ -54,11 +76,47 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if( resultCode == RESULT_OK && data != null ){
-            Uri selectedImage = data.getData();
+        if( resultCode == RESULT_OK && data != null && data.getData()!=null ){
+            selectedImage = data.getData();
             imageView = findViewById(R.id.imageView_new_bid);
             imageView.setImageURI(selectedImage);
+            uploadPicture();
         }
+    }
+
+    private void uploadPicture() {
+        //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
+        final String randomKey = UUID.randomUUID().toString();
+        StorageReference ref = storageReference.child("images/"+randomKey);
+        final ProgressDialog pd = new ProgressDialog(getApplicationContext());
+        pd.setTitle("loading...");
+        ref.putFile(selectedImage)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        pd.dismiss();
+                        Toast.makeText(getApplicationContext(), "saved", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                        pd.dismiss();
+                        Toast.makeText(getApplicationContext(), "not saved", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                        double progressPercent  = (100.00 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                        pd.setMessage("percentage: "+ (int) progressPercent + "%");
+                    }
+                });
+//        pd.show();
     }
 
     @Override
