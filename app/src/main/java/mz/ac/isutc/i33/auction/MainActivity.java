@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public static String username;
     public static final String FILE_NAME = "user.txt";
     public static String USERNAME = "username";
+    //just testing
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
