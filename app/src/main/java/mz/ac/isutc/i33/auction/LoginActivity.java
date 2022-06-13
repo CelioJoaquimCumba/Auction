@@ -166,6 +166,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if ( v.equals(login_button) ){
+            CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_login);
+            InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
             if ( validFields(
                     username,
                     password)

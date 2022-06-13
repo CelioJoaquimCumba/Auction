@@ -34,4 +34,5 @@ public class InternetController {
     public void alertDisconnection(View view, Object system_service){
         if (!checkConnection(system_service)) Snackbar.make(view, "Offline", Snackbar.LENGTH_LONG).show();
     }
+
 }
