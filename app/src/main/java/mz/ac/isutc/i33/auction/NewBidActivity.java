@@ -105,14 +105,15 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
     //NOTE : it validates internet conection before publishing the bid
     private boolean validation(){
         //Validating connection to internet
-        CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_new_bid);
+        /*CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_new_bid);
         if (InternetController.getInstance().checkConnection(coordinatorLayout)){
             return true;
         } else {
             system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
             InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
             return  false;
-        }
+        }*/
+        return true;
     }
 
     @Override
