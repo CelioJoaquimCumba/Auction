@@ -49,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
     private boolean isValidPassword(String target, EditText password_ET){
-        TextInputLayout password_TIL = findViewById(R.id.password_text_input_register);
+        TextInputLayout password_TIL = findViewById(R.id.password_register);
         if (password.length()<8) {
             password_TIL.setError("Password must have at least 8 characters");
             return false;
@@ -79,10 +79,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String passwordConfirmation = passwordConfirmation_ET.getText().toString();
         boolean valid = true;
 
-        TextInputLayout email_TIL = findViewById(R.id.email_text_input_register);
-        TextInputLayout username_TIL = findViewById(R.id.username_text_input_register);
-        TextInputLayout password_TIL = findViewById(R.id.password_text_input_register);
-        TextInputLayout passwordConfirmation_TIL = findViewById(R.id.confirmpassword_text_input_register);
+        TextInputLayout email_TIL = findViewById(R.id.email_register);
+        TextInputLayout username_TIL = findViewById(R.id.username_register);
+        TextInputLayout password_TIL = findViewById(R.id.password_register);
+        TextInputLayout passwordConfirmation_TIL = findViewById(R.id.confirmpassword_register);
         if( username.equals("") ){
 
 
