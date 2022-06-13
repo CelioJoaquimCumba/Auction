@@ -1,226 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="@dimen/fab_margin"
+    android:id="@+id/coordinator_layout_register"
     tools:context=".RegisterActivity">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:gravity="center"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/fab_margin">
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <!-- Register title -->
-            <TextView
-                android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/login_and_register"
-                android:text="Register"/>
-
-            <!-- Username field -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="80"-->
-<!--                    android:text="Username" />-->
-
-<!--                <EditText-->
-<!--                    android:id="@+id/username_register"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="20"-->
-<!--                    android:hint="Insira o seu username"-->
-<!--                    android:inputType="text" />-->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusBottomStart="30dp"
-                    android:id="@+id/username_text_input_register"
-                    android:layout_width="match_parent"
+                android:orientation="vertical">
+                <!-- Register title -->
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="Username">
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/login_and_register"
+                    android:text="Register"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/username_register"
+                <!-- Username field -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!--                <TextView-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="80"-->
+                    <!--                    android:text="Username" />-->
+
+                    <!--                <EditText-->
+                    <!--                    android:id="@+id/username_register"-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="20"-->
+                    <!--                    android:hint="Insira o seu username"-->
+                    <!--                    android:inputType="text" />-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxCornerRadiusBottomStart="30dp"
+                        android:id="@+id/username_text_input_register"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
+                        android:layout_margin="4dp"
+                        android:hint="Username">
 
-            <!-- Email field -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/username_register"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="80"-->
-<!--                    android:text="Email" />-->
-
-<!--                <EditText-->
-<!--                    android:id="@+id/email_register"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="20"-->
-<!--                    android:hint="Insira o seu email" />-->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusBottomStart="30dp"
-                    android:id="@+id/email_text_input_register"
+                <!-- Email field -->
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="Email">
+                    android:layout_height="wrap_content">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/email_register"
+                    <!--                <TextView-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="80"-->
+                    <!--                    android:text="Email" />-->
+
+                    <!--                <EditText-->
+                    <!--                    android:id="@+id/email_register"-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="20"-->
+                    <!--                    android:hint="Insira o seu email" />-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxCornerRadiusBottomStart="30dp"
+                        android:id="@+id/email_text_input_register"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_margin="4dp"
+                        android:hint="Email">
 
-            </LinearLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/email_register"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Password field -->
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="80"-->
-<!--                    android:text="Password" />-->
-
-<!--                <EditText-->
-<!--                    android:id="@+id/password_register"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="20"-->
-<!--                    android:ems="10"-->
-<!--                    android:hint="Insira sua password"-->
-<!--                    android:inputType="textPassword"-->
-<!--                    tools:ignore="TouchTargetSizeCheck" />-->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusBottomStart="30dp"
-                    android:id="@+id/password_text_input_register"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="Password"
-
-                    app:errorEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/password_register"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword"/>
-                    <TextView
-                        android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="----------------------"/>
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <!-- Password confirmation field -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="80"-->
-<!--                    android:text="Passoword Confirmation" />-->
-
-<!--                <EditText-->
-<!--                    android:id="@+id/confirmpassword_register"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="20"-->
-<!--                    android:ems="10"-->
-<!--                    android:hint="Confirme  password"-->
-<!--                    android:inputType="textPassword" />-->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusBottomStart="30dp"
-                    android:id="@+id/confirmpassword_text_input_register"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="Password confirmation"
-                    app:errorEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/confirmpassword_register"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <!-- Register button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/register_button_register"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:cornerRadius="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Register"/>
-
-            <!-- to Login -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                <!-- Password field -->
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Damn, I actually have an account!   "
-                        android:textAlignment="center" />
+                    <!--                <TextView-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="80"-->
+                    <!--                    android:text="Password" />-->
 
-                    <TextView
+                    <!--                <EditText-->
+                    <!--                    android:id="@+id/password_register"-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="20"-->
+                    <!--                    android:ems="10"-->
+                    <!--                    android:hint="Insira sua password"-->
+                    <!--                    android:inputType="textPassword"-->
+                    <!--                    tools:ignore="TouchTargetSizeCheck" />-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxCornerRadiusBottomStart="30dp"
+                        android:id="@+id/password_text_input_register"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="50"
-                        android:clickable="true"
-                        android:onClick="toLoginPage"
-                        android:text="click here to go back "
-                        android:textColor="@color/primary" />
+                        android:layout_margin="4dp"
+                        android:hint="Password"
+
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/password_register"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"/>
+                        <TextView
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="----------------------"/>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
+                <!-- Password confirmation field -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!--                <TextView-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="80"-->
+                    <!--                    android:text="Passoword Confirmation" />-->
+
+                    <!--                <EditText-->
+                    <!--                    android:id="@+id/confirmpassword_register"-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="20"-->
+                    <!--                    android:ems="10"-->
+                    <!--                    android:hint="Confirme  password"-->
+                    <!--                    android:inputType="textPassword" />-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxCornerRadiusBottomStart="30dp"
+                        android:id="@+id/confirmpassword_text_input_register"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:hint="Password confirmation"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/confirmpassword_register"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!-- Register button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/register_button_register"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    app:cornerRadius="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Register"/>
+
+                <!-- to Login -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Damn, I actually have an account!   "
+                            android:textAlignment="center" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50"
+                            android:clickable="true"
+                            android:onClick="toLoginPage"
+                            android:text="click here to go back "
+                            android:textColor="@color/primary" />
+                    </LinearLayout>
+
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
+
+    </LinearLayout>
 
 
 
 
-</LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

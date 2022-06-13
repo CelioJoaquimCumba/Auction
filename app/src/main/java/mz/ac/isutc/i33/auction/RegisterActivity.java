@@ -1,5 +1,6 @@
 package mz.ac.isutc.i33.auction;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -24,11 +26,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import mz.ac.isutc.i33.auction.controllers.InternetController;
 import mz.ac.isutc.i33.auction.models.User;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     EditText username, email, password, passwordConfirmation;
     Button register_button;
+    Object system_service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +46,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         register_button = findViewById(R.id.register_button_register);
 
         register_button.setOnClickListener(this);
-
+        system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
+        CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_register);
+        InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
 
     }
     private  boolean isValidEmail(CharSequence target) {
