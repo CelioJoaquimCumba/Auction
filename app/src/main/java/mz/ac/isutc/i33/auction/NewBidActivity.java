@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -39,6 +41,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+import mz.ac.isutc.i33.auction.controllers.InternetController;
 import mz.ac.isutc.i33.auction.models.Bid.Bid;
 import mz.ac.isutc.i33.auction.models.Bid.Bid_post;
 
@@ -56,6 +59,7 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
 
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    Object system_service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +95,9 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
         load_image_button.setOnClickListener(this);
         date_button.setOnClickListener(this);
         time_button.setOnClickListener(this);
-
+        system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
+        CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_new_bid);
+        InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
 
     }
 

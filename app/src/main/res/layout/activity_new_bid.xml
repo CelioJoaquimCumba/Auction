@@ -1,267 +1,275 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:paddingHorizontal="10dp"
+    android:id="@+id/coordinator_layout_new_bid"
     tools:context=".NewBidActivity">
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:gravity="center"
-            android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        >
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <!-- Title -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/login_and_register"
-                android:textColor="@color/primary"
-                android:text="New Bid"/>
-
-            <!-- Product image -->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical">
-                <com.google.android.material.card.MaterialCardView
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Title -->
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="70dp"
-                    app:cardBackgroundColor="?attr/colorPrimaryDark"
-                    app:cardCornerRadius="4dp">
-                    <ImageView
-                        android:id="@+id/imageView_new_bid"
+                    android:textSize="@dimen/login_and_register"
+                    android:textColor="@color/primary"
+                    android:text="New Bid"/>
+
+                <!-- Product image -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scaleType="fitCenter"/>
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="70dp"
+                        app:cardBackgroundColor="?attr/colorPrimaryDark"
+                        app:cardCornerRadius="4dp">
+                        <ImageView
+                            android:id="@+id/imageView_new_bid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitCenter"/>
 
-                </com.google.android.material.card.MaterialCardView>
+                    </com.google.android.material.card.MaterialCardView>
 
+                    <com.google.android.material.button.MaterialButton
+                        app:cornerRadius="30dp"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:id="@+id/load_image_new_bid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Load image from gallery"
+                        />
+                </LinearLayout>
+                <!-- Title field -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <!--                <TextView-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="80"-->
+                    <!--                    android:text="Title"/>-->
+                    <!--                <EditText-->
+                    <!--                    android:id="@+id/bid_title_new_bid"-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="20"-->
+                    <!--                    android:hint="Title"/>-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/bid_title_text_input_new_bid"
+                        app:boxCornerRadiusBottomStart="30dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:hint="Title">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/bid_title_new_bid"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!-- Description field -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <!--                <TextView-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="80"-->
+                    <!--                    android:text="Description"/>-->
+                    <!--                <EditText-->
+                    <!--                    android:id="@+id/bid_description_new_bid"-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="20"-->
+                    <!--                    android:hint="Description"-->
+                    <!--                    android:inputType="text"-->
+                    <!--                    android:maxLines="7"/>-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxCornerRadiusBottomStart="30dp"
+                        android:id="@+id/bid_description_text_input_new_bid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:hint="Description">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/bid_description_new_bid"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:maxLines="7" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!-- Starting bid field -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <!--                <TextView-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="80"-->
+                    <!--                    android:text="Starting bid"/>-->
+                    <!--                <EditText-->
+                    <!--                    android:id="@+id/bid_starting_bid_new_bid"-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="20"-->
+                    <!--                    android:hint="MZN"-->
+                    <!--                    android:inputType="numberDecimal"/>-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxCornerRadiusBottomStart="30dp"
+                        android:id="@+id/bid_starting_bid_text_input_new_bid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:hint="Starting bid">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/bid_starting_bid_new_bid"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!-- ending date -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+                    <!--                <TextView-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="10"-->
+                    <!--                    android:text="End date"-->
+                    <!--                    />-->
+                    <!--                <EditText-->
+                    <!--                    android:id="@+id/ending_date_new_bid"-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:hint="date"-->
+                    <!--                    android:editable="false"-->
+                    <!--                    android:inputType="none"-->
+                    <!--                    android:layout_weight="80"-->
+                    <!--                    />-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/ending_date_text_input_new_bid"
+                        app:boxCornerRadiusBottomStart="30dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="90"
+                        android:hint="End date">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/ending_date_new_bid"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:editable="false"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/date_button_new_bid"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select date"
+                        android:layout_weight="10"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+                    <!--                <TextView-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_weight="10"-->
+                    <!--                    android:text="End time"-->
+                    <!--                    />-->
+                    <!--                <EditText-->
+                    <!--                    android:id="@+id/ending_time_new_bid"-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:hint="time"-->
+                    <!--                    android:inputType="none"-->
+                    <!--                    android:editable="false"-->
+                    <!--                    android:layout_weight="80"-->
+                    <!--                    />-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxCornerRadiusBottomStart="30dp"
+                        android:id="@+id/ending_time_text_input_new_bid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="90"
+                        android:hint="EndTime">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/ending_time_new_bid"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/time_button_new_bid"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select time"
+                        android:layout_weight="10"
+                        />
+                </LinearLayout>
+
+
+
+                <!-- register new bid button -->
                 <com.google.android.material.button.MaterialButton
-                    app:cornerRadius="30dp"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:id="@+id/load_image_new_bid"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:id="@+id/register_button_new_bid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Load image from gallery"
-                    />
+                    android:text="New bid"/>
+
             </LinearLayout>
-            <!-- Title field -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="80"-->
-<!--                    android:text="Title"/>-->
-<!--                <EditText-->
-<!--                    android:id="@+id/bid_title_new_bid"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="20"-->
-<!--                    android:hint="Title"/>-->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:id="@+id/bid_title_text_input_new_bid"
-                    app:boxCornerRadiusBottomStart="30dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="Title">
+        </ScrollView>
+    </LinearLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/bid_title_new_bid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-            <!-- Description field -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="80"-->
-<!--                    android:text="Description"/>-->
-<!--                <EditText-->
-<!--                    android:id="@+id/bid_description_new_bid"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="20"-->
-<!--                    android:hint="Description"-->
-<!--                    android:inputType="text"-->
-<!--                    android:maxLines="7"/>-->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusBottomStart="30dp"
-                    android:id="@+id/bid_description_text_input_new_bid"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="Description">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/bid_description_new_bid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLines="7" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <!-- Starting bid field -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="80"-->
-<!--                    android:text="Starting bid"/>-->
-<!--                <EditText-->
-<!--                    android:id="@+id/bid_starting_bid_new_bid"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="20"-->
-<!--                    android:hint="MZN"-->
-<!--                    android:inputType="numberDecimal"/>-->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusBottomStart="30dp"
-                    android:id="@+id/bid_starting_bid_text_input_new_bid"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="Starting bid">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/bid_starting_bid_new_bid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-            <!-- ending date -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:layout_height="wrap_content">
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="10"-->
-<!--                    android:text="End date"-->
-<!--                    />-->
-<!--                <EditText-->
-<!--                    android:id="@+id/ending_date_new_bid"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:hint="date"-->
-<!--                    android:editable="false"-->
-<!--                    android:inputType="none"-->
-<!--                    android:layout_weight="80"-->
-<!--                    />-->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:id="@+id/ending_date_text_input_new_bid"
-                    app:boxCornerRadiusBottomStart="30dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:layout_weight="90"
-                    android:hint="End date">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/ending_date_new_bid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        android:editable="false"
-                        android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/date_button_new_bid"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Select date"
-                    android:layout_weight="10"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:layout_height="wrap_content">
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="10"-->
-<!--                    android:text="End time"-->
-<!--                    />-->
-<!--                <EditText-->
-<!--                    android:id="@+id/ending_time_new_bid"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:hint="time"-->
-<!--                    android:inputType="none"-->
-<!--                    android:editable="false"-->
-<!--                    android:layout_weight="80"-->
-<!--                    />-->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusBottomStart="30dp"
-                    android:id="@+id/ending_time_text_input_new_bid"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:layout_weight="90"
-                    android:hint="EndTime">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/ending_time_new_bid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/time_button_new_bid"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Select time"
-                    android:layout_weight="10"
-                    />
-            </LinearLayout>
-
-
-
-            <!-- register new bid button -->
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:id="@+id/register_button_new_bid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New bid"/>
-
-        </LinearLayout>
-    </ScrollView>
 
 
 
@@ -276,4 +284,4 @@
     
     
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
