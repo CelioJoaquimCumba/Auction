@@ -111,7 +111,6 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
         } else {
             system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
             InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
-            Toast.makeText(NewBidActivity.this, "not validateed", Toast.LENGTH_SHORT).show();
             return  false;
         }
     }
