@@ -1,12 +1,14 @@
 package mz.ac.isutc.i33.auction;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +44,7 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
         String description = bid_post.getDescription();
         String highest_bidder = bid_post.getHighest_bidder();
         String highest_bid = bid_post.getHighest_bid();
+        String image_bid = bid_post.getImageUri();
 
         LayoutInflater inflater = LayoutInflater.from(context);
         convertView = inflater.inflate(resource, parent, false);
@@ -53,6 +56,7 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
         TextView tvHighestBid = (TextView) convertView.findViewById(R.id.highest_bid);
         Button button = (Button) convertView.findViewById(R.id.bid_button_bid);
         EditText bid_proposal = convertView.findViewById(R.id.bid_proposal_bid);
+        ImageView bid_image = convertView.findViewById(R.id.imageView_bid_adapter);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +72,8 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
 
             }
         });
-
+        //TODO: image uri fix this
+        bid_image.setImageURI(Uri.parse(image_bid));
         tvUsername.setText(username);
         tvTitle.setText(title);
         tvDescription.setText(description);

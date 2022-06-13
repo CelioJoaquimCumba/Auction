@@ -44,7 +44,7 @@
     </LinearLayout>
     <!-- bidding product image -->
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageView_bid_adapter"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"

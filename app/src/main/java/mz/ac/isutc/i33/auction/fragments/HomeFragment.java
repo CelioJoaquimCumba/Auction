@@ -50,11 +50,11 @@ public class HomeFragment extends Fragment {
         listView = rootView.findViewById(R.id.list_view);
 
         ArrayList<Bid_post> bid_posts = new ArrayList<>();
-        ArrayList<Bid> bids = new ArrayList<>();
-        bids.add(new Bid("Celio",12.0,"1"));
-        bids.add(new Bid(username,22.0,"1"));
-        bids.add(new Bid("Tomas",10.0,"1"));
-        bids.add(new Bid("Cumba",21.0,"1"));
+//        ArrayList<Bid> bids = new ArrayList<>();
+//        bids.add(new Bid("Celio",12.0,"1"));
+//        bids.add(new Bid(username,22.0,"1"));
+//        bids.add(new Bid("Tomas",10.0,"1"));
+//        bids.add(new Bid("Cumba",21.0,"1"));
 //        bid_posts.add(new Bid_post("claudio","Absolutely nothing","Claudio","40","12/12/2022","12:30",bids,""));
         database = FirebaseDatabase.getInstance("https://auction-a4883-default-rtdb.firebaseio.com/");
         reference = database.getReference("bidPosts");

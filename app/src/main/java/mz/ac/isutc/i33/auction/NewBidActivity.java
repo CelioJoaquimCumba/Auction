@@ -36,6 +36,7 @@ import java.io.File;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 import mz.ac.isutc.i33.auction.models.Bid.Bid;
@@ -128,6 +129,10 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
                         // Get a URL to the uploaded content
                         //TODO: check the problem to get the image uri in the code below
                         Task<Uri> downloadUri = taskSnapshot.getStorage().getDownloadUrl();
+                        //TODO:Ask professor if it is okay to do this
+                        while(! downloadUri.isSuccessful() ){
+
+                        }
                         if ( downloadUri.isSuccessful() ){
                             imageUri = downloadUri.getResult().toString();
                         } else {

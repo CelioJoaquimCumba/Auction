@@ -47,6 +47,28 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private  boolean isValidEmail(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
+    private boolean isValidPassword(String target, EditText password_ET){
+        if (password.length()<8) {
+            password_ET.setError("Password must have at least 8 characters");
+            return false;
+        }
+
+        //Checks each character to see if it is acceptable.
+        for (int i = 0; i < password.length(); i++){
+            char c = target.charAt(i);
+
+            if (       !('a' <= c && c <= 'z') // Checks if it is a lower case letter
+                    && !('A' <= c && c <= 'Z') //Checks if it is an upper case letter
+                    && !('0' <= c && c <= '9') //Checks to see if it is a digit
+            ) {
+                password_ET.setError("Only letter & digits are acceptable.");
+
+                return false;
+            }
+
+        }
+        return true;
+    }
     private boolean validFields(EditText username_ET, EditText email_ET, EditText password_ET, EditText passwordConfirmation_ET){
         String username = username_ET.getText().toString().trim();
         String email = email_ET.getText().toString().trim();
@@ -69,6 +91,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
         if( !isValidEmail(email) ) {
             email_ET.setError("Email is not valid");
+            return false;
+        }
+        if(!isValidPassword(password, password_ET)){
             return false;
         }
         return true;
