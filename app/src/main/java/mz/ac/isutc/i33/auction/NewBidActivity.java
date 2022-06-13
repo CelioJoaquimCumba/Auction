@@ -102,8 +102,18 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     //TODO : we need to make some real validation here, for now it only return true no matter what
+    //NOTE : it validates internet conection before publishing the bid
     private boolean validation(){
-        return true;
+        //Validating connection to internet
+        CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_new_bid);
+        if (InternetController.getInstance().checkConnection(coordinatorLayout)){
+            return true;
+        } else {
+            system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
+            InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
+            Toast.makeText(NewBidActivity.this, "not validateed", Toast.LENGTH_SHORT).show();
+            return  false;
+        }
     }
 
     @Override
