@@ -2,6 +2,7 @@ package mz.ac.isutc.i33.auction;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -29,6 +30,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import mz.ac.isutc.i33.auction.controllers.InternetController;
 import mz.ac.isutc.i33.auction.fragments.HomeFragment;
 import mz.ac.isutc.i33.auction.fragments.SearchFragment;
 
@@ -48,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
+        CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_main);
+        InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
 
         load(null);
 
