@@ -10,11 +10,11 @@
     tools:context=".RegisterActivity">
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
             android:gravity="center"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <!-- Register title -->
@@ -30,19 +30,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="80"
-                    android:text="Username" />
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="80"-->
+<!--                    android:text="Username" />-->
 
-                <EditText
-                    android:id="@+id/username_register"
+<!--                <EditText-->
+<!--                    android:id="@+id/username_register"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="20"-->
+<!--                    android:hint="Insira o seu username"-->
+<!--                    android:inputType="text" />-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    android:id="@+id/username_text_input_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
-                    android:hint="Insira o seu username"
-                    android:inputType="text" />
+                    android:layout_margin="4dp"
+                    android:hint="Username">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/username_register"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <!-- Email field -->
@@ -50,18 +66,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="80"
-                    android:text="Email" />
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="80"-->
+<!--                    android:text="Email" />-->
 
-                <EditText
-                    android:id="@+id/email_register"
+<!--                <EditText-->
+<!--                    android:id="@+id/email_register"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="20"-->
+<!--                    android:hint="Insira o seu email" />-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    android:id="@+id/email_text_input_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
-                    android:hint="Insira o seu email" />
+                    android:layout_margin="4dp"
+                    android:hint="Email">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/email_register"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
@@ -71,21 +103,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="80"
-                    android:text="Password" />
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="80"-->
+<!--                    android:text="Password" />-->
 
-                <EditText
-                    android:id="@+id/password_register"
+<!--                <EditText-->
+<!--                    android:id="@+id/password_register"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="20"-->
+<!--                    android:ems="10"-->
+<!--                    android:hint="Insira sua password"-->
+<!--                    android:inputType="textPassword"-->
+<!--                    tools:ignore="TouchTargetSizeCheck" />-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    android:id="@+id/password_text_input_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
-                    android:ems="10"
-                    android:hint="Insira sua password"
-                    android:inputType="textPassword"
-                    tools:ignore="TouchTargetSizeCheck" />
+                    android:layout_margin="4dp"
+                    android:hint="Password"
+
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/password_register"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"/>
+                    <TextView
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="----------------------"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <!-- Password confirmation field -->
@@ -93,26 +148,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="80"
-                    android:text="Passoword Confirmation" />
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="80"-->
+<!--                    android:text="Passoword Confirmation" />-->
 
-                <EditText
-                    android:id="@+id/confirmpassword_register"
+<!--                <EditText-->
+<!--                    android:id="@+id/confirmpassword_register"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="20"-->
+<!--                    android:ems="10"-->
+<!--                    android:hint="Confirme  password"-->
+<!--                    android:inputType="textPassword" />-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    android:id="@+id/confirmpassword_text_input_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
-                    android:ems="10"
-                    android:hint="Confirme  password"
-                    android:inputType="textPassword" />
+                    android:layout_margin="4dp"
+                    android:hint="Password confirmation"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/confirmpassword_register"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-
             <!-- Register button -->
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/register_button_register"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:cornerRadius="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Register"/>

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,8 +49,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
     private boolean isValidPassword(String target, EditText password_ET){
+        TextInputLayout password_TIL = findViewById(R.id.password_text_input_register);
         if (password.length()<8) {
-            password_ET.setError("Password must have at least 8 characters");
+            password_TIL.setError("Password must have at least 8 characters");
             return false;
         }
 
@@ -67,6 +69,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
 
         }
+        password_TIL.setError(null);
         return true;
     }
     private boolean validFields(EditText username_ET, EditText email_ET, EditText password_ET, EditText passwordConfirmation_ET){
@@ -74,29 +77,53 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String email = email_ET.getText().toString().trim();
         String password = password_ET.getText().toString().trim();
         String passwordConfirmation = passwordConfirmation_ET.getText().toString();
+        boolean valid = true;
+
+        TextInputLayout email_TIL = findViewById(R.id.email_text_input_register);
+        TextInputLayout username_TIL = findViewById(R.id.username_text_input_register);
+        TextInputLayout password_TIL = findViewById(R.id.password_text_input_register);
+        TextInputLayout passwordConfirmation_TIL = findViewById(R.id.confirmpassword_text_input_register);
         if( username.equals("") ){
-            return false;
+
+
+            username_TIL.setError("Username is empty!");
+            valid = false;
+        }else{
+            username_TIL.setError(null);
         }
+
         if( email.equals("") ){
-            email_ET.setError("Email is empty");
-            return false;
+//            view.setError("Email is empty");
+            email_TIL.setError("Email is empty");
+            valid = false;
+        }else{
+            email_TIL.setError(null);
         }
+
         if( password.equals("") ){
-            password_ET.setError("Password is empty");
-            return false;
+            password_TIL.setError("Password is empty");
+            valid = false;
+        }else{
+            password_TIL.setError(null);
         }
+
         if( !password.equals(passwordConfirmation) ){
-            passwordConfirmation_ET.setError("Passwords not matching");
-            return false;
+            passwordConfirmation_TIL.setError("Passwords not matching");
+            valid = false;
+        }else{
+            passwordConfirmation_TIL.setError(null);
         }
+
         if( !isValidEmail(email) ) {
-            email_ET.setError("Email is not valid");
-            return false;
+            email_TIL.setError("Email is not valid");
+            valid = false;
+        }else{
+            email_TIL.setError(null);
         }
         if(!isValidPassword(password, password_ET)){
-            return false;
+            valid = false;
         }
-        return true;
+        return valid;
     }
 
     public void toLoginPage(View view) {

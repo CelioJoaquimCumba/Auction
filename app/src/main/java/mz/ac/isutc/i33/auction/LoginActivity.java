@@ -12,12 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -46,17 +49,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean validFields(EditText username_ET, EditText password_ET){
         String username = username_ET.getText().toString().trim();
         String password = password_ET.getText().toString().trim();
+        TextInputLayout username_TIL = findViewById(R.id.username_text_input_login);
+        TextInputLayout password_TIL = findViewById(R.id.password_text_input_login);
+        boolean valid = true;
         if(
                 username.equals("")
         ) {
-            username_ET.setError("Insira o username");
-            return false;
+            username_TIL.setError("username is empty");
+            valid = false;
+        }else{
+            username_TIL.setError(null);
         }
         if( password.equals("")){
-            password_ET.setError("Insira a password");
-            return false;
+            password_TIL.setError("password is empty");
+            valid = false;
+        }else{
+            password_TIL.setError(null);
         }
-        return true;
+        return valid;
     }
 
     private boolean userExists(String username, String password){
