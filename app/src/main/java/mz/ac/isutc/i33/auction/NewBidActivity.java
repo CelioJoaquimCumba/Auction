@@ -122,15 +122,8 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
     //TODO : we need to make some real validation here, for now it only return true no matter what
     //NOTE : it validates internet conection before publishing the bid
     private boolean validation(){
-        //Validating connection to internet
-        /*CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_new_bid);
-        if (InternetController.getInstance().checkConnection(coordinatorLayout)){
-            return true;
-        } else {
-            system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
-            InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
-            return  false;
-        }*/
+
+
         String title_txt = title.getText().toString();
         String description_txt = description.getText().toString();
         String starting_bid_txt = startingBid.getText().toString();
@@ -141,12 +134,14 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
         final int TOO_LONG_TITLE = 20;
         final int TOO_LONG_DESCRIPTION = 158;
 
+
         title_TIL.setError(null);
         description_TIL.setError(null);
         starting_bid_TIL.setError(null);
         end_date_TIL.setError(null);
         end_time_TIL.setError(null);
         image_load_TIL.setError(null);
+
 
         if( title_txt.trim().equals("") ){
             title_TIL.setError("Title is empty");
@@ -342,13 +337,20 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if (register_button.equals(v)) {
-            if(validation()){
-               // Intent intent = new Intent(NewBidActivity.this, MainActivity.class);
-               // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                registerBidPost();
-                //uploadPicture();
-                //startActivity(intent);
+            system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (InternetController.getInstance().checkConnection(system_service)){
+                if(validation()){
+                    // Intent intent = new Intent(NewBidActivity.this, MainActivity.class);
+                    // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    registerBidPost();
+                    //uploadPicture();
+                    //startActivity(intent);
+                }
+            } else {
+                CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_new_bid);
+                InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
             }
+
         }else if(load_image_button.equals(v)){
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, 3);
