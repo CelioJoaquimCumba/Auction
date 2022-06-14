@@ -142,7 +142,7 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
         end_time_TIL.setError(null);
         image_load_TIL.setError(null);
 
-        //Validating connection to internet
+        //Validating connection to internet.
         if (!InternetController.getInstance().checkConnection(coordinatorLayout)){
             valid = false;
             system_service = getSystemService(Context.CONNECTIVITY_SERVICE);

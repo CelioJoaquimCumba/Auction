@@ -166,6 +166,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v){
         if( v.equals(register_button) ){
+            system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
+            CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_register);
+            InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
             String username_txt = username.getText().toString().trim();
             String email_txt = email.getText().toString().trim();
             String password_txt = password.getText().toString().trim();
