@@ -13,11 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
+import mz.ac.isutc.i33.auction.controllers.InternetController;
 import mz.ac.isutc.i33.auction.models.Bid.Bid;
 import mz.ac.isutc.i33.auction.models.Bid.Bid_post;
 
@@ -26,6 +28,7 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
 
     private Context context;
     int resource;
+    Object system_service;
     DatabaseReference reference;
 
     public BidListAdapter(Context context, int resource, ArrayList<Bid_post> objects, DatabaseReference reference) {
@@ -57,6 +60,9 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
         Button button = (Button) convertView.findViewById(R.id.bid_button_bid);
         EditText bid_proposal = convertView.findViewById(R.id.bid_proposal_bid);
         ImageView bid_image = convertView.findViewById(R.id.imageView_bid_adapter);
+        //system_service = context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        //CoordinatorLayout coordinatorLayout = convertView.findViewById(R.id.coordinator_layout_register);
+        //InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

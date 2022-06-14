@@ -168,17 +168,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public boolean checkConnection(){
-        //testing
-        boolean is_connected = false;
-        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-            return true;
-        }
-        return false;
-    }
-
-
 }
 
