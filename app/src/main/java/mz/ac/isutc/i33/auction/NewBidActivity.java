@@ -133,7 +133,7 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
         final int TOO_SHORT = 8;
         final int TOO_LONG_TITLE = 20;
         final int TOO_LONG_DESCRIPTION = 158;
-        CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_new_bid);
+
 
         title_TIL.setError(null);
         description_TIL.setError(null);
@@ -142,12 +142,6 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
         end_time_TIL.setError(null);
         image_load_TIL.setError(null);
 
-        //Validating connection to internet.
-        if (!InternetController.getInstance().checkConnection(coordinatorLayout)){
-            valid = false;
-            system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
-            InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
-        }
 
         if( title_txt.trim().equals("") ){
             title_TIL.setError("Title is empty");
@@ -343,13 +337,20 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if (register_button.equals(v)) {
-            if(validation()){
-               // Intent intent = new Intent(NewBidActivity.this, MainActivity.class);
-               // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                registerBidPost();
-                //uploadPicture();
-                //startActivity(intent);
+            system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (InternetController.getInstance().checkConnection(system_service)){
+                if(validation()){
+                    // Intent intent = new Intent(NewBidActivity.this, MainActivity.class);
+                    // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    registerBidPost();
+                    //uploadPicture();
+                    //startActivity(intent);
+                }
+            } else {
+                CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_new_bid);
+                InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
             }
+
         }else if(load_image_button.equals(v)){
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, 3);
