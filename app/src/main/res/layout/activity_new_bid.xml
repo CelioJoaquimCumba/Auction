@@ -54,14 +54,26 @@
 
                     </com.google.android.material.card.MaterialCardView>
 
-                    <com.google.android.material.button.MaterialButton
-                        app:cornerRadius="30dp"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:id="@+id/load_image_new_bid"
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/bid_load_image_text_input_new_bid"
+                        app:boxCornerRadiusBottomStart="30dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Load image from gallery"
-                        />
+                        android:gravity="center"
+                        android:layout_margin="4dp"
+                        android:hint="Title">
+                        <com.google.android.material.button.MaterialButton
+                            app:cornerRadius="30dp"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:id="@+id/load_image_new_bid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Load image from gallery"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
                 <!-- Title field -->
                 <LinearLayout
