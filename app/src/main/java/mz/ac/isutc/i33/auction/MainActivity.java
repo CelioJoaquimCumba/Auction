@@ -32,6 +32,7 @@ import java.util.List;
 
 import mz.ac.isutc.i33.auction.controllers.InternetController;
 import mz.ac.isutc.i33.auction.fragments.HomeFragment;
+import mz.ac.isutc.i33.auction.fragments.ProfileFragment;
 import mz.ac.isutc.i33.auction.fragments.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,8 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         List<Fragment> fragmentList = new ArrayList<>();
+        fragmentList.add( new ProfileFragment(username));
         fragmentList.add(new HomeFragment(username));
         fragmentList.add(new SearchFragment());
+
 
         tabLayout = findViewById(R.id.tab_layout);
         pager = findViewById(R.id.pager);
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         pager.addOnPageChangeListener( new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         //gives the action for the tabs states
+        pager.setCurrentItem(1);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

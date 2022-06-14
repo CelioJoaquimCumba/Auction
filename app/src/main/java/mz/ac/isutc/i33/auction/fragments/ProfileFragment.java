@@ -2,22 +2,19 @@ package mz.ac.isutc.i33.auction.fragments;
 
 import static android.content.ContentValues.TAG;
 
-import android.app.ProgressDialog;
-import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,40 +25,36 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import mz.ac.isutc.i33.auction.models.Bid.Bid;
-import mz.ac.isutc.i33.auction.models.Bid.Bid_post;
 import mz.ac.isutc.i33.auction.BidListAdapter;
 import mz.ac.isutc.i33.auction.R;
+import mz.ac.isutc.i33.auction.models.Bid.Bid_post;
 
-public class HomeFragment extends Fragment {
-    ListView listView;
+
+public class ProfileFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference reference;
-    String username;
-    private int limit=5,start=0,end=limit;
     ArrayList<Bid_post> bid_posts;
     BidListAdapter adapter;
     ProgressBar progressBar;
-    boolean load = true;
-
-    public HomeFragment(String username) {
+    ListView listView;
+    String username;
+    TextView username_TV;
+    public ProfileFragment(String username) {
         this.username = username;
     }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.
-                inflate(R.layout.home_page,
+                inflate(R.layout.fragment_profile,
                         container,false);
 
         database = FirebaseDatabase.getInstance("https://auction-a4883-default-rtdb.firebaseio.com/");
         reference = database.getReference("bidPosts");
 
-        listView = rootView.findViewById(R.id.list_view_home);
-        progressBar = rootView.findViewById(R.id.progressBar_home);
+        listView = rootView.findViewById(R.id.list_view_profile);
+        progressBar = rootView.findViewById(R.id.progressBar_profile);
+        username_TV = rootView.findViewById(R.id.username_profile);
+        username_TV.setText(username);
 
 
         bid_posts = new ArrayList<>();
@@ -77,45 +70,12 @@ public class HomeFragment extends Fragment {
                 R.layout.bid_adapter,bid_posts,
                 reference);
         listView.setAdapter(adapter);
-        returnData(limit);
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int counts[] = {firstVisibleItem, visibleItemCount, totalItemCount};
-
-                if( load &&  firstVisibleItem + visibleItemCount == totalItemCount ){
-                    Toast.makeText(getContext(), "1", Toast.LENGTH_SHORT).show();
-                    start = end;
-                    end = start + limit;
-                    returnData(end);
-                    load = false;
-                    //TODO
-                }
-                if ( !load && firstVisibleItem + visibleItemCount != totalItemCount ){
-                    load = true;
-                    Toast.makeText(getContext(), "2", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-
-
-
-
-
+        returnData();
         return rootView;
     }
-
-    private void returnData(int end){
+    private void returnData(){
         progressBar.setVisibility(View.VISIBLE);
-        Query databaseQuery = reference
-                .limitToFirst(end);
+        Query databaseQuery = reference;
 
         databaseQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -123,7 +83,10 @@ public class HomeFragment extends Fragment {
                 bid_posts.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Bid_post bid_post = snapshot.getValue(Bid_post.class);
-                    bid_posts.add( bid_post );
+                    if ( bid_post.getOwner().trim().equals(username.trim()) ){
+                        bid_posts.add( bid_post );
+                    }
+
                 }
 
                 adapter.notifyDataSetChanged();
@@ -138,4 +101,5 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
 }

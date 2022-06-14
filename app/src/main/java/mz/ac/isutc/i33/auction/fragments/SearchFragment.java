@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import mz.ac.isutc.i33.auction.R;
 
 public class SearchFragment extends Fragment {
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

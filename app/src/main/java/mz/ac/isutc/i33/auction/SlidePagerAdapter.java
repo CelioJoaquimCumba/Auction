@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SlidePagerAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> fragmentList;
-    private String[] titles = new String[]{"Home","Search"};
+    private String[] titles = new String[]{"Profile", "Home", "Search"};
 
 
     public SlidePagerAdapter( FragmentManager fm, List<Fragment> fragmentList) {
