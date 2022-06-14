@@ -122,15 +122,8 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
     //TODO : we need to make some real validation here, for now it only return true no matter what
     //NOTE : it validates internet conection before publishing the bid
     private boolean validation(){
-        //Validating connection to internet
-        /*CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_new_bid);
-        if (InternetController.getInstance().checkConnection(coordinatorLayout)){
-            return true;
-        } else {
-            system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
-            InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
-            return  false;
-        }*/
+
+
         String title_txt = title.getText().toString();
         String description_txt = description.getText().toString();
         String starting_bid_txt = startingBid.getText().toString();
@@ -140,6 +133,7 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
         final int TOO_SHORT = 8;
         final int TOO_LONG_TITLE = 20;
         final int TOO_LONG_DESCRIPTION = 158;
+        CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_new_bid);
 
         title_TIL.setError(null);
         description_TIL.setError(null);
@@ -147,6 +141,13 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
         end_date_TIL.setError(null);
         end_time_TIL.setError(null);
         image_load_TIL.setError(null);
+
+        //Validating connection to internet
+        if (!InternetController.getInstance().checkConnection(coordinatorLayout)){
+            valid = false;
+            system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
+            InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
+        }
 
         if( title_txt.trim().equals("") ){
             title_TIL.setError("Title is empty");
