@@ -2,13 +2,16 @@ package mz.ac.isutc.i33.auction.fragments;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -34,6 +38,11 @@ public class HomeFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference reference;
     String username;
+    private int limit=5,start=0,end=limit;
+    ArrayList<Bid_post> bid_posts;
+    BidListAdapter adapter;
+    ProgressBar progressBar;
+    boolean load = true;
 
     public HomeFragment(String username) {
         this.username = username;
@@ -47,26 +56,71 @@ public class HomeFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.
                 inflate(R.layout.home_page,
                         container,false);
-        listView = rootView.findViewById(R.id.list_view);
 
-        ArrayList<Bid_post> bid_posts = new ArrayList<>();
+        database = FirebaseDatabase.getInstance("https://auction-a4883-default-rtdb.firebaseio.com/");
+        reference = database.getReference("bidPosts");
+
+        listView = rootView.findViewById(R.id.list_view_home);
+        progressBar = rootView.findViewById(R.id.progressBar_home);
+
+
+        bid_posts = new ArrayList<>();
 //        ArrayList<Bid> bids = new ArrayList<>();
 //        bids.add(new Bid("Celio",12.0,"1"));
 //        bids.add(new Bid(username,22.0,"1"));
 //        bids.add(new Bid("Tomas",10.0,"1"));
 //        bids.add(new Bid("Cumba",21.0,"1"));
 //        bid_posts.add(new Bid_post("claudio","Absolutely nothing","Claudio","40","12/12/2022","12:30",bids,""));
-        database = FirebaseDatabase.getInstance("https://auction-a4883-default-rtdb.firebaseio.com/");
-        reference = database.getReference("bidPosts");
-        BidListAdapter adapter = new BidListAdapter(
+
+        adapter = new BidListAdapter(
                 getContext(),
                 R.layout.bid_adapter,bid_posts,
                 reference);
         listView.setAdapter(adapter);
+        initialData();
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                int counts[] = {firstVisibleItem, visibleItemCount, totalItemCount};
+
+                if( load &&  firstVisibleItem + visibleItemCount == totalItemCount ){
+                    Toast.makeText(getContext(), "1", Toast.LENGTH_SHORT).show();
+                    start = end;
+                    end = start + limit;
+                    returnData(end);
+                    load = false;
+                    //TODO
+                }
+                if ( !load && firstVisibleItem + visibleItemCount != totalItemCount ){
+                    load = true;
+                    Toast.makeText(getContext(), "2", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
 
-        reference.addValueEventListener(new ValueEventListener() {
+
+
+
+
+        return rootView;
+    }
+    private void initialData(){
+
+        returnData(limit);
+    }
+    private void returnData(int end){
+        progressBar.setVisibility(View.VISIBLE);
+        Query databaseQuery = reference
+                .limitToFirst(end);
+
+        databaseQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 bid_posts.clear();
@@ -74,16 +128,17 @@ public class HomeFragment extends Fragment {
                     Bid_post bid_post = snapshot.getValue(Bid_post.class);
                     bid_posts.add( bid_post );
                 }
+
                 adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 Log.w(TAG, "Failed to read value.", error.toException());
+                progressBar.setVisibility(View.GONE);
             }
         });
-
-
-        return rootView;
     }
 }

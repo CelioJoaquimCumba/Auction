@@ -158,6 +158,7 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
                         progressBar.dismiss();
                         Snackbar.make(findViewById(android.R.id.content), "Registro do artigo feito com sucesso", Snackbar.LENGTH_LONG).show();
                         Intent intent = new Intent(NewBidActivity.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
                 })
@@ -191,7 +192,6 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
         if(startingBid_txt.trim() == "") startingBid_txt = "0";
         String endDate_txt = date.getText().toString();
         String endTime_txt = time.getText().toString();
-        //TODO: remove this hardCode value
         String owner = username;
         ArrayList<Bid> bids = new ArrayList<Bid>();
         bids.add(new Bid(owner, Double.parseDouble(startingBid_txt),product_id));

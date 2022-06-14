@@ -55,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
     private boolean isValidPassword(String target, EditText password_ET){
-        TextInputLayout password_TIL = findViewById(R.id.password_register);
+        TextInputLayout password_TIL = findViewById(R.id.password_text_input_register);
         if (password.length()<8) {
             password_TIL.setError("Password must have at least 8 characters");
             return false;
