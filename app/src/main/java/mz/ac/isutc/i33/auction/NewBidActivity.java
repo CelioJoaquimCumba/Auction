@@ -290,7 +290,7 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
                         }
                         registerBidPostInfo();
                         progressBar.dismiss();
-                        Snackbar.make(findViewById(android.R.id.content), "Registro do artigo feito com sucesso", Snackbar.LENGTH_LONG).show();
+//                        Snackbar.make(findViewById(android.R.id.content), "Registro do artigo feito com sucesso", Snackbar.LENGTH_LONG).show();
                         Intent intent = new Intent(NewBidActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
@@ -309,7 +309,6 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
                     public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
                         double progressPercent  = (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
                         progressBar.setProgress((int) progressPercent);
-                        Toast.makeText(NewBidActivity.this, progressPercent+"", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

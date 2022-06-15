@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public static String username;
     public static final String FILE_NAME = "user.txt";
     public static String USERNAME = "username";
+
     Object system_service;
     //just testing
     @Override
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             fragmentList.add( new ProfileFragment(username) );
             fragmentList.add( new HomeFragment(username) );
-            fragmentList.add(new SearchFragment());
+            fragmentList.add(new SearchFragment(username));
 
         }
 

@@ -13,6 +13,7 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,18 +34,20 @@ import mz.ac.isutc.i33.auction.models.Bid.Bid;
 import mz.ac.isutc.i33.auction.models.Bid.Bid_post;
 import mz.ac.isutc.i33.auction.BidListAdapter;
 import mz.ac.isutc.i33.auction.R;
+import mz.ac.isutc.i33.auction.models.User;
 
 public class HomeFragment extends Fragment {
     ListView listView;
     FirebaseDatabase database;
-    DatabaseReference reference;
+    DatabaseReference reference, reference_users;
     String username;
     private int limit=5,start=0,end=limit;
     ArrayList<Bid_post> bid_posts;
     BidListAdapter adapter;
     ProgressBar progressBar;
     boolean load = true;
-    ImageView empty_image;
+    TextView empty_text;
+    User user;
 
     public HomeFragment(String username) {
         this.username = username;
@@ -61,18 +64,15 @@ public class HomeFragment extends Fragment {
 
         database = FirebaseDatabase.getInstance("https://auction-a4883-default-rtdb.firebaseio.com/");
         reference = database.getReference("bidPosts");
+        reference_users = database.getReference("users");
 
         listView = rootView.findViewById(R.id.list_view_home);
         progressBar = rootView.findViewById(R.id.progressBar_home);
 
-        empty_image = rootView.findViewById(R.id.imageView_empty_home);
+        empty_text = rootView.findViewById(R.id.text_empty_home);
         bid_posts = new ArrayList<>();
 
-        if( bid_posts.isEmpty() ){
-            empty_image.setVisibility(View.VISIBLE);
-        }else{
-            empty_image.setVisibility(View.GONE);
-        }
+
 //        ArrayList<Bid> bids = new ArrayList<>();
 //        bids.add(new Bid("Celio",12.0,"1"));
 //        bids.add(new Bid(username,22.0,"1"));
@@ -80,12 +80,8 @@ public class HomeFragment extends Fragment {
 //        bids.add(new Bid("Cumba",21.0,"1"));
 //        bid_posts.add(new Bid_post("claudio","Absolutely nothing","Claudio","40","12/12/2022","12:30",bids,""));
 
-        adapter = new BidListAdapter(
-                getContext(),
-                R.layout.bid_adapter,bid_posts,
-                reference);
-        listView.setAdapter(adapter);
-        returnData(limit);
+
+        returnUser();
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -136,6 +132,9 @@ public class HomeFragment extends Fragment {
 
                 adapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
+                if( bid_posts.isEmpty() ){
+                    empty_text.setVisibility(View.VISIBLE);
+                }
 
             }
 
@@ -143,6 +142,33 @@ public class HomeFragment extends Fragment {
             public void onCancelled(DatabaseError error) {
                 Log.w(TAG, "Failed to read value.", error.toException());
                 progressBar.setVisibility(View.GONE);
+
+            }
+        });
+    }
+    private void returnUser(){
+//        reference_users.equalTo(username,"username");
+        reference_users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    User user_database = (User) snapshot.getValue(User.class);
+                    if(user_database.getUsername().trim().equals(username.trim())){
+                        user = user_database;
+                        returnData(limit);
+                        adapter = new BidListAdapter(
+                                getContext(),
+                                R.layout.bid_adapter,bid_posts,
+                                reference,reference_users, user);
+                        listView.setAdapter(adapter);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }

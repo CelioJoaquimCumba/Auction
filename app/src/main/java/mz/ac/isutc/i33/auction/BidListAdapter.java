@@ -13,15 +13,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
-import mz.ac.isutc.i33.auction.controllers.InternetController;
 import mz.ac.isutc.i33.auction.models.Bid.Bid;
 import mz.ac.isutc.i33.auction.models.Bid.Bid_post;
+import mz.ac.isutc.i33.auction.models.User;
 
 public class BidListAdapter extends ArrayAdapter<Bid_post> {
     private static final String TAG = "PersonListAdapter";
@@ -29,13 +28,16 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
     private Context context;
     int resource;
     Object system_service;
-    DatabaseReference reference;
+    DatabaseReference reference_bid_posts, reference_users;
+    User user;
 
-    public BidListAdapter(Context context, int resource, ArrayList<Bid_post> objects, DatabaseReference reference) {
+    public BidListAdapter(Context context, int resource, ArrayList<Bid_post> objects, DatabaseReference reference_bid_posts,DatabaseReference reference_users, User user) {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;
-        this.reference = reference;
+        this.reference_bid_posts = reference_bid_posts;
+        this.reference_users = reference_users;
+        this.user = user;
     }
 
     @NonNull
@@ -67,11 +69,16 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String bid_proposal_text = bid_proposal.getText().toString();
                 if (!bid_proposal_text.trim().equals("") && Double.parseDouble(bid_proposal_text)>Double.parseDouble(highest_bid) ){
-                    bid_post.addBid(new Bid(MainActivity.username,Double.parseDouble(bid_proposal_text),bid_post.getId()));
-                    reference.child(bid_post.getId()).setValue(bid_post);
+                    if ( Double.parseDouble(bid_proposal_text)<=user.getBalance() ){
+                        bid_post.addBid(new Bid(user.getUsername(),Double.parseDouble(bid_proposal_text),bid_post.getId()));
+                        reference_bid_posts.child(bid_post.getId()).setValue(bid_post);
+                        user.deductBalance( Double.parseDouble(bid_proposal_text) );
+                        reference_users.child(user.getUsername()).setValue(user);
+                    }else{
+                        Toast.makeText(getContext(), "Saldo insuficiente para fazer a transaccao!", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     Toast.makeText(getContext(), "Proposta de leilao concluida sem sucesso! insira um valor maior que o apostado.", Toast.LENGTH_SHORT).show();
                 }

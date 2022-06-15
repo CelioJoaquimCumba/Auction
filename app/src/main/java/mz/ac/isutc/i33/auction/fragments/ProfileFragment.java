@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,16 +32,16 @@ import mz.ac.isutc.i33.auction.models.User;
 
 
 public class ProfileFragment extends Fragment {
-    FirebaseDatabase database_bid_posts, database_users;
+    FirebaseDatabase database;
     DatabaseReference reference_bid_posts, reference_users;
     ArrayList<Bid_post> bid_posts;
     BidListAdapter adapter;
     ProgressBar progressBar;
     ListView listView;
     String username;
-    TextView username_TV, followers_TV, following_TV;
+    TextView username_TV, followers_TV, following_TV,balance_TV;
     User user;
-    ImageView empty_image;
+    TextView empty_text;
     public ProfileFragment(String username) {
         this.username = username;
     }
@@ -52,27 +51,24 @@ public class ProfileFragment extends Fragment {
                 inflate(R.layout.fragment_profile,
                         container,false);
 
-        database_bid_posts = FirebaseDatabase.getInstance("https://auction-a4883-default-rtdb.firebaseio.com/");
-        reference_bid_posts = database_bid_posts.getReference("bidPosts");
-        reference_users = database_bid_posts.getReference("users");
+        database = FirebaseDatabase.getInstance("https://auction-a4883-default-rtdb.firebaseio.com/");
+        reference_bid_posts = database.getReference("bidPosts");
+        reference_users = database.getReference("users");
 
         listView = rootView.findViewById(R.id.list_view_profile);
         progressBar = rootView.findViewById(R.id.progressBar_profile);
         username_TV = rootView.findViewById(R.id.username_profile);
         followers_TV = rootView.findViewById(R.id.followers_count_profile);
         following_TV = rootView.findViewById(R.id.following_count_profile);
+        balance_TV = rootView.findViewById(R.id.balance_profile);
 
-        empty_image = rootView.findViewById(R.id.imageView_empty_profile);
+        empty_text = rootView.findViewById(R.id.text_empty_profile);
 
-        if( bid_posts.isEmpty() ){
-            empty_image.setVisibility(View.VISIBLE);
-        }else{
-            empty_image.setVisibility(View.GONE);
-        }
 
 
 
         bid_posts = new ArrayList<>();
+
 //        ArrayList<Bid> bids = new ArrayList<>();
 //        bids.add(new Bid("Celio",12.0,"1"));
 //        bids.add(new Bid(username,22.0,"1"));
@@ -80,12 +76,7 @@ public class ProfileFragment extends Fragment {
 //        bids.add(new Bid("Cumba",21.0,"1"));
 //        bid_posts.add(new Bid_post("claudio","Absolutely nothing","Claudio","40","12/12/2022","12:30",bids,""));
 
-        adapter = new BidListAdapter(
-                getContext(),
-                R.layout.bid_adapter,bid_posts,
-                reference_bid_posts);
-        listView.setAdapter(adapter);
-        returnData();
+
         returnUser();
         return rootView;
     }
@@ -107,6 +98,9 @@ public class ProfileFragment extends Fragment {
 
                 adapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
+                if( bid_posts.isEmpty() ){
+                    empty_text.setVisibility(View.VISIBLE);
+                }
 
             }
 
@@ -130,15 +124,15 @@ public class ProfileFragment extends Fragment {
                     if(user_database.getUsername().trim().equals(username.trim())){
                         user = user_database;
                         updateProfile();
+                        returnData();
+                        adapter = new BidListAdapter(
+                                getContext(),
+                                R.layout.bid_adapter,bid_posts,
+                                reference_bid_posts,reference_users, user);
+                        listView.setAdapter(adapter);
                         break;
                     }
                 }
-            }
-
-            private void updateProfile(){
-                username_TV.setText(user.getUsername());
-                followers_TV.setText(user.getFollowers_count()+"");
-                following_TV.setText(user.getFollowing_count()+"");
             }
 
             @Override
@@ -146,6 +140,13 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+    }
+
+    private void updateProfile(){
+        username_TV.setText(user.getUsername());
+        followers_TV.setText(user.getFollowers_count()+"");
+        following_TV.setText(user.getFollowing_count()+"");
+        balance_TV.setText(user.getBalance()+"");
     }
 
 }
