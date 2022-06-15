@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,17 +29,20 @@ import java.util.ArrayList;
 import mz.ac.isutc.i33.auction.BidListAdapter;
 import mz.ac.isutc.i33.auction.R;
 import mz.ac.isutc.i33.auction.models.Bid.Bid_post;
+import mz.ac.isutc.i33.auction.models.User;
 
 
 public class ProfileFragment extends Fragment {
-    FirebaseDatabase database;
-    DatabaseReference reference;
+    FirebaseDatabase database_bid_posts, database_users;
+    DatabaseReference reference_bid_posts, reference_users;
     ArrayList<Bid_post> bid_posts;
     BidListAdapter adapter;
     ProgressBar progressBar;
     ListView listView;
     String username;
-    TextView username_TV;
+    TextView username_TV, followers_TV, following_TV;
+    User user;
+    ImageView empty_image;
     public ProfileFragment(String username) {
         this.username = username;
     }
@@ -48,13 +52,24 @@ public class ProfileFragment extends Fragment {
                 inflate(R.layout.fragment_profile,
                         container,false);
 
-        database = FirebaseDatabase.getInstance("https://auction-a4883-default-rtdb.firebaseio.com/");
-        reference = database.getReference("bidPosts");
+        database_bid_posts = FirebaseDatabase.getInstance("https://auction-a4883-default-rtdb.firebaseio.com/");
+        reference_bid_posts = database_bid_posts.getReference("bidPosts");
+        reference_users = database_bid_posts.getReference("users");
 
         listView = rootView.findViewById(R.id.list_view_profile);
         progressBar = rootView.findViewById(R.id.progressBar_profile);
         username_TV = rootView.findViewById(R.id.username_profile);
-        username_TV.setText(username);
+        followers_TV = rootView.findViewById(R.id.followers_count_profile);
+        following_TV = rootView.findViewById(R.id.following_count_profile);
+
+        empty_image = rootView.findViewById(R.id.imageView_empty_profile);
+
+        if( bid_posts.isEmpty() ){
+            empty_image.setVisibility(View.VISIBLE);
+        }else{
+            empty_image.setVisibility(View.GONE);
+        }
+
 
 
         bid_posts = new ArrayList<>();
@@ -68,14 +83,15 @@ public class ProfileFragment extends Fragment {
         adapter = new BidListAdapter(
                 getContext(),
                 R.layout.bid_adapter,bid_posts,
-                reference);
+                reference_bid_posts);
         listView.setAdapter(adapter);
         returnData();
+        returnUser();
         return rootView;
     }
     private void returnData(){
         progressBar.setVisibility(View.VISIBLE);
-        Query databaseQuery = reference;
+        Query databaseQuery = reference_bid_posts;
 
         databaseQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -98,6 +114,36 @@ public class ProfileFragment extends Fragment {
             public void onCancelled(DatabaseError error) {
                 Log.w(TAG, "Failed to read value.", error.toException());
                 progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+    private void returnUser(){
+//        reference_users.equalTo(username,"username");
+        reference_users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    User user_database = (User) snapshot.getValue(User.class);
+                    String bc = "";
+                    User a = user_database;
+                    String b = username.trim();
+                    if(user_database.getUsername().trim().equals(username.trim())){
+                        user = user_database;
+                        updateProfile();
+                        break;
+                    }
+                }
+            }
+
+            private void updateProfile(){
+                username_TV.setText(user.getUsername());
+                followers_TV.setText(user.getFollowers_count()+"");
+                following_TV.setText(user.getFollowing_count()+"");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }

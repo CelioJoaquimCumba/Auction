@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ public class HomeFragment extends Fragment {
     BidListAdapter adapter;
     ProgressBar progressBar;
     boolean load = true;
+    ImageView empty_image;
 
     public HomeFragment(String username) {
         this.username = username;
@@ -63,8 +65,14 @@ public class HomeFragment extends Fragment {
         listView = rootView.findViewById(R.id.list_view_home);
         progressBar = rootView.findViewById(R.id.progressBar_home);
 
-
+        empty_image = rootView.findViewById(R.id.imageView_empty_home);
         bid_posts = new ArrayList<>();
+
+        if( bid_posts.isEmpty() ){
+            empty_image.setVisibility(View.VISIBLE);
+        }else{
+            empty_image.setVisibility(View.GONE);
+        }
 //        ArrayList<Bid> bids = new ArrayList<>();
 //        bids.add(new Bid("Celio",12.0,"1"));
 //        bids.add(new Bid(username,22.0,"1"));

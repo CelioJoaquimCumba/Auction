@@ -51,18 +51,28 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
         CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_main);
         InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
 
         load(null);
 
-
-
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add( new ProfileFragment(username));
-        fragmentList.add(new HomeFragment(username));
-        fragmentList.add(new SearchFragment());
+
+        if( !loggedIn ){
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }else{
+            fragmentList.add( new ProfileFragment(username) );
+            fragmentList.add( new HomeFragment(username) );
+            fragmentList.add(new SearchFragment());
+
+        }
+
+
+
 
 
         tabLayout = findViewById(R.id.tab_layout);
@@ -92,11 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        if( !loggedIn ){
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
+
 
 
     }
@@ -171,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 
 }
 
