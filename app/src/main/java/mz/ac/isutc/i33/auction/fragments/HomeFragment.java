@@ -28,7 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import mz.ac.isutc.i33.auction.models.Bid.Bid;
 import mz.ac.isutc.i33.auction.models.Bid.Bid_post;
@@ -128,9 +130,11 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Bid_post bid_post = snapshot.getValue(Bid_post.class);
                     bid_posts.add( bid_post );
+                    adapter.notifyDataSetChanged();
+                    if( !dateIsValid(bid_post.getEndTime(), bid_post.getEndDate()) ){
+                        snapshot.getRef().setValue(null);
+                    }
                 }
-
-                adapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
                 if( bid_posts.isEmpty() ){
                     empty_text.setVisibility(View.VISIBLE);
@@ -145,6 +149,20 @@ public class HomeFragment extends Fragment {
 
             }
         });
+    }
+    private boolean dateIsValid(String time, String date) {
+        Date date_now = new Date();
+        Date date_comparing;
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+            date_comparing = formatter.parse(date + " " + time);
+        } catch (Exception e) {
+            return false;
+        }
+        if (date_comparing.compareTo(date_now) <= 0) {
+            return false;
+        }
+        return true;
     }
     private void returnUser(){
 //        reference_users.equalTo(username,"username");

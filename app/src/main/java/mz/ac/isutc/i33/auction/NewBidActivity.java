@@ -292,7 +292,7 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
                         progressBar.dismiss();
 //                        Snackbar.make(findViewById(android.R.id.content), "Registro do artigo feito com sucesso", Snackbar.LENGTH_LONG).show();
                         Intent intent = new Intent(NewBidActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
                 })
