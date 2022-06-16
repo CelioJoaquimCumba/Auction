@@ -40,6 +40,7 @@ import mz.ac.isutc.i33.auction.models.User;
 
 public class HomeFragment extends Fragment {
     ListView listView;
+    User winner;
     FirebaseDatabase database;
     DatabaseReference reference, reference_users;
     String username;
@@ -127,12 +128,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 bid_posts.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Bid_post bid_post = snapshot.getValue(Bid_post.class);
-                    bid_posts.add( bid_post );
+                    bid_posts.add(bid_post);
                     adapter.notifyDataSetChanged();
-                    if( !dateIsValid(bid_post.getEndTime(), bid_post.getEndDate()) ){
-                        snapshot.getRef().setValue(null);
+                    if (!dateIsValid(bid_post.getEndTime(), bid_post.getEndDate())) {
+
+                        deleteBid(snapshot);
+
                     }
                 }
                 progressBar.setVisibility(View.GONE);
@@ -179,6 +182,35 @@ public class HomeFragment extends Fragment {
                                 R.layout.bid_adapter,bid_posts,
                                 reference,reference_users, user);
                         listView.setAdapter(adapter);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    private void deleteBid(DataSnapshot snapshot) {
+        Bid_post bid_post = snapshot.getValue(Bid_post.class);
+        snapshot.getRef().setValue(null);
+        //NOTIFICAO E ENVIAR EMAIL
+        returnWinner(bid_post.getHighest_bidder());
+    }
+
+    private void returnWinner(String value){
+
+        reference_users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    User user_database = (User) snapshot.getValue(User.class);
+                    if(user_database.getUsername().trim().equals(value.trim())){
+                        winner = snapshot.getValue(User.class);
                         break;
                     }
                 }

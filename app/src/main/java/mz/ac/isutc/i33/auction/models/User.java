@@ -7,6 +7,7 @@ public class User {
     private double balance;
     private ArrayList<String> followers;
     private ArrayList<String> followings;
+    private ArrayList<String> notifications;
     private int followers_count;
     private int following_count;
     public User(){
@@ -25,6 +26,7 @@ public class User {
         this.followings.add("test");
         this.following_count = followings.size();
         this.followers_count = followers.size();
+        this.notifications = new ArrayList<>();
     }
 
     public String getUsername() {
@@ -113,6 +115,14 @@ public class User {
 
     public void removeFollowing(){
         following_count--;
+    }
+
+    public ArrayList<String> getNotifications() {
+        return notifications;
+    }
+
+    public void addNotifications(String notification){
+        notifications.add(notification);
     }
 
 }
