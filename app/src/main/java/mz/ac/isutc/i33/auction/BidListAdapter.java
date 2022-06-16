@@ -71,13 +71,15 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
             public void onClick(View view) {
                 String bid_proposal_text = bid_proposal.getText().toString();
                 if (!bid_proposal_text.trim().equals("") && Double.parseDouble(bid_proposal_text)>Double.parseDouble(highest_bid) ){
-                    if ( Double.parseDouble(bid_proposal_text)<=user.getBalance() ){
-                        bid_post.addBid(new Bid(user.getUsername(),Double.parseDouble(bid_proposal_text),bid_post.getId()));
-                        reference_bid_posts.child(bid_post.getId()).setValue(bid_post);
-                        user.deductBalance( Double.parseDouble(bid_proposal_text) );
-                        reference_users.child(user.getUsername()).setValue(user);
-                    }else{
+                    if ( Double.parseDouble(bid_proposal_text)>user.getBalance() ){
+//                        bid_post.addBid(new Bid(user.getUsername(),Double.parseDouble(bid_proposal_text),bid_post.getId()));
+//                        reference_bid_posts.child(bid_post.getId()).setValue(bid_post);
+//                        user.deductBalance( Double.parseDouble(bid_proposal_text) );
+//                        reference_users.child(user.getUsername()).setValue(user);
                         Toast.makeText(getContext(), "Saldo insuficiente para fazer a transaccao!", Toast.LENGTH_SHORT).show();
+                    } else {
+                            bid_post.addBid(new Bid(user.getUsername(),Double.parseDouble(bid_proposal_text),bid_post.getId()));
+                            reference_bid_posts.child(bid_post.getId()).setValue(bid_post);
                     }
                 }else{
                     Toast.makeText(getContext(), "Proposta de leilao concluida sem sucesso! insira um valor maior que o apostado.", Toast.LENGTH_SHORT).show();

@@ -41,6 +41,7 @@ import mz.ac.isutc.i33.auction.models.User;
 public class HomeFragment extends Fragment {
     ListView listView;
     User winner;
+    User owner;
     FirebaseDatabase database;
     DatabaseReference reference, reference_users;
     String username;
@@ -199,8 +200,35 @@ public class HomeFragment extends Fragment {
         Bid_post bid_post = snapshot.getValue(Bid_post.class);
         snapshot.getRef().setValue(null);
         //NOTIFICAO E ENVIAR EMAIL
+        String notification = bid_post.getTitle() + "has expired" ;
+        owner.addNotifications(notification);
         returnWinner(bid_post.getHighest_bidder());
+        owner.addBalance(Double.parseDouble(bid_post.getHighest_bid()));
+        winner.deductBalance(Double.parseDouble(bid_post.getHighest_bid()));
+        reference_users.child(owner.getUsername()).setValue(owner);
+        reference_users.child(winner.getUsername()).setValue(winner);
     }
+
+    private void returnOwner(String value){
+        reference_users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    User user_database = (User) snapshot.getValue(User.class);
+                    if(user_database.getUsername().trim().equals(value.trim())){
+                        owner = snapshot.getValue(User.class);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     private void returnWinner(String value){
 
