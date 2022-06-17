@@ -20,19 +20,24 @@ import java.util.ArrayList;
 
 import mz.ac.isutc.i33.auction.models.Bid.Bid;
 import mz.ac.isutc.i33.auction.models.Bid.Bid_post;
+import mz.ac.isutc.i33.auction.models.User;
 
 public class BidListAdapter extends ArrayAdapter<Bid_post> {
     private static final String TAG = "PersonListAdapter";
 
     private Context context;
     int resource;
-    DatabaseReference reference;
+    Object system_service;
+    DatabaseReference reference_bid_posts, reference_users;
+    User user;
 
-    public BidListAdapter(Context context, int resource, ArrayList<Bid_post> objects, DatabaseReference reference) {
+    public BidListAdapter(Context context, int resource, ArrayList<Bid_post> objects, DatabaseReference reference_bid_posts,DatabaseReference reference_users, User user) {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;
-        this.reference = reference;
+        this.reference_bid_posts = reference_bid_posts;
+        this.reference_users = reference_users;
+        this.user = user;
     }
 
     @NonNull
@@ -57,15 +62,25 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
         Button button = (Button) convertView.findViewById(R.id.bid_button_bid);
         EditText bid_proposal = convertView.findViewById(R.id.bid_proposal_bid);
         ImageView bid_image = convertView.findViewById(R.id.imageView_bid_adapter);
+        //system_service = context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        //CoordinatorLayout coordinatorLayout = convertView.findViewById(R.id.coordinator_layout_register);
+        //InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String bid_proposal_text = bid_proposal.getText().toString();
                 if (!bid_proposal_text.trim().equals("") && Double.parseDouble(bid_proposal_text)>Double.parseDouble(highest_bid) ){
-                    bid_post.addBid(new Bid(MainActivity.username,Double.parseDouble(bid_proposal_text),bid_post.getId()));
-                    reference.child(bid_post.getId()).setValue(bid_post);
+                    if ( Double.parseDouble(bid_proposal_text)>user.getBalance() ){
+//                        bid_post.addBid(new Bid(user.getUsername(),Double.parseDouble(bid_proposal_text),bid_post.getId()));
+//                        reference_bid_posts.child(bid_post.getId()).setValue(bid_post);
+//                        user.deductBalance( Double.parseDouble(bid_proposal_text) );
+//                        reference_users.child(user.getUsername()).setValue(user);
+                        Toast.makeText(getContext(), "Saldo insuficiente para fazer a transaccao!", Toast.LENGTH_SHORT).show();
+                    } else {
+                            bid_post.addBid(new Bid(user.getUsername(),Double.parseDouble(bid_proposal_text),bid_post.getId()));
+                            reference_bid_posts.child(bid_post.getId()).setValue(bid_post);
+                    }
                 }else{
                     Toast.makeText(getContext(), "Proposta de leilao concluida sem sucesso! insira um valor maior que o apostado.", Toast.LENGTH_SHORT).show();
                 }

@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 
 public class Bid_post {
     String id;
@@ -14,14 +15,8 @@ public class Bid_post {
     String description;
     String startingBid;
     String endDate;
+    Date createdDate;
 
-    public String getImageUri() {
-        return imageUri;
-    }
-
-    public void setImageUri(String imageUri) {
-        this.imageUri = imageUri;
-    }
 
     String endTime;
     ArrayList<Bid> bids;
@@ -50,6 +45,7 @@ public class Bid_post {
         this.id = id;
         this.owner = owner;
         this.title = title;
+        this.createdDate = new Date();
         this.description = description;
         this.startingBid = startingBid;
         this.endDate = endDate;
@@ -63,8 +59,17 @@ public class Bid_post {
 
     }
     public Bid_post(){
-
     }
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+    public String getImageUri() {
+        return imageUri;
+    }
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
+
     public String getId() {
         return id;
     }

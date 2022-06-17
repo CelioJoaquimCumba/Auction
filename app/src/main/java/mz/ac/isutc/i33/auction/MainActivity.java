@@ -32,6 +32,7 @@ import java.util.List;
 
 import mz.ac.isutc.i33.auction.controllers.InternetController;
 import mz.ac.isutc.i33.auction.fragments.HomeFragment;
+import mz.ac.isutc.i33.auction.fragments.ProfileFragment;
 import mz.ac.isutc.i33.auction.fragments.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public static String username;
     public static final String FILE_NAME = "user.txt";
     public static String USERNAME = "username";
+
     Object system_service;
     //just testing
     @Override
@@ -50,17 +52,29 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         system_service = getSystemService(Context.CONNECTIVITY_SERVICE);
         CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout_main);
         InternetController.getInstance().alertDisconnection(coordinatorLayout, system_service);
 
         load(null);
 
-
-
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(new HomeFragment(username));
-        fragmentList.add(new SearchFragment());
+
+        if( !loggedIn ){
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }else{
+            fragmentList.add( new ProfileFragment(username) );
+            fragmentList.add( new HomeFragment(username) );
+            fragmentList.add(new SearchFragment(username));
+
+        }
+
+
+
+
 
         tabLayout = findViewById(R.id.tab_layout);
         pager = findViewById(R.id.pager);
@@ -72,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         pager.addOnPageChangeListener( new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         //gives the action for the tabs states
+        pager.setCurrentItem(1);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -88,11 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        if( !loggedIn ){
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
+
 
 
     }
@@ -166,17 +177,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    public boolean checkConnection(){
-        //testing
-        boolean is_connected = false;
-        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-            return true;
-        }
-        return false;
     }
 
 
