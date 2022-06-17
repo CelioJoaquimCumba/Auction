@@ -80,7 +80,7 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
                         Toast.makeText(getContext(), "Saldo insuficiente para fazer a transaccao!", Toast.LENGTH_SHORT).show();
                     } else {
                             bid_post.addBid(new Bid(user.getUsername(),Double.parseDouble(bid_proposal_text),bid_post.getId()));
-                            reference_bid_posts.child(bid_post.getId()).setValue(bid_post);
+                            reference_bid_posts.child(bid_post.getCreatedDate().toString()).setValue(bid_post);
                     }
                 }else{
                     Toast.makeText(getContext(), "Proposta de leilao concluida sem sucesso! insira um valor maior que o apostado.", Toast.LENGTH_SHORT).show();
