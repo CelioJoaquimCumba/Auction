@@ -201,7 +201,9 @@ public class HomeFragment extends Fragment {
         snapshot.getRef().setValue(null);
         //NOTIFICAO E ENVIAR EMAIL
         String notification = bid_post.getTitle() + "has expired" ;
+        returnOwner(bid_post.getOwner());
         owner.addNotifications(notification);
+
         returnWinner(bid_post.getHighest_bidder());
         owner.addBalance(Double.parseDouble(bid_post.getHighest_bid()));
         winner.deductBalance(Double.parseDouble(bid_post.getHighest_bid()));
