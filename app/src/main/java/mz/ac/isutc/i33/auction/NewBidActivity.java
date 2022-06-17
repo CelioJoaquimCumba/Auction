@@ -329,7 +329,7 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
         ArrayList<Bid> bids = new ArrayList<Bid>();
         bids.add(new Bid(owner, Double.parseDouble(startingBid_txt),product_id));
         Bid_post bid_post = new Bid_post(product_id,owner,title_txt,description_txt, startingBid_txt,endDate_txt,endTime_txt, bids, imageUri);
-        databaseReference.child(product_id).setValue(bid_post);
+        databaseReference.child(bid_post.getCreatedDate().toString()).setValue(bid_post);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

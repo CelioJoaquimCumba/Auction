@@ -4,6 +4,9 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -16,7 +19,6 @@ public class Bid_post {
     String startingBid;
     String endDate;
     Date createdDate;
-
 
     String endTime;
     ArrayList<Bid> bids;

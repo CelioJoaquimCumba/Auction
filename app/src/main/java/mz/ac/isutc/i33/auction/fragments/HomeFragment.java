@@ -164,11 +164,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 bid_posts.clear();
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Bid_post bid_post = snapshot.getValue(Bid_post.class);
-                    bid_posts.add(bid_post);
+                    bid_posts.add(0,bid_post);
 
                     //deleteBid(snapshot);
+                    //snapshot.getRef().setValue(null);
                     if (!dateIsValid(bid_post.getEndTime(), bid_post.getEndDate())) {
 
 
