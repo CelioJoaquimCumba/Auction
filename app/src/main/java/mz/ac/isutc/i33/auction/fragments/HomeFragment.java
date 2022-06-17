@@ -40,8 +40,7 @@ import mz.ac.isutc.i33.auction.models.User;
 
 public class HomeFragment extends Fragment {
     ListView listView;
-    User winner;
-    User owner;
+
     FirebaseDatabase database;
     DatabaseReference reference, reference_users;
     String username;
@@ -51,7 +50,7 @@ public class HomeFragment extends Fragment {
     ProgressBar progressBar;
     boolean load = true;
     TextView empty_text;
-    User user;
+    User user,owner,winner;
 
     public HomeFragment(String username) {
         this.username = username;
@@ -86,30 +85,31 @@ public class HomeFragment extends Fragment {
 
 
         returnUser();
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int counts[] = {firstVisibleItem, visibleItemCount, totalItemCount};
-
-                if( load &&  firstVisibleItem + visibleItemCount == totalItemCount ){
-                    Toast.makeText(getContext(), "1", Toast.LENGTH_SHORT).show();
-                    start = end;
-                    end = start + limit;
-                    returnData(end);
-                    load = false;
-                    //TODO
-                }
-                if ( !load && firstVisibleItem + visibleItemCount != totalItemCount ){
-                    load = true;
-                    Toast.makeText(getContext(), "2", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        returnData();
+//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                int counts[] = {firstVisibleItem, visibleItemCount, totalItemCount};
+//
+//                if( load &&  firstVisibleItem + visibleItemCount == totalItemCount ){
+//                    Toast.makeText(getContext(), "1", Toast.LENGTH_SHORT).show();
+//                    start = end;
+//                    end = start + limit;
+//                    returnData(end);
+//                    load = false;
+//                    //TODO
+//                }
+//                if ( !load && firstVisibleItem + visibleItemCount != totalItemCount ){
+//                    load = true;
+//                    Toast.makeText(getContext(), "2", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
 
 
@@ -119,11 +119,46 @@ public class HomeFragment extends Fragment {
 
         return rootView;
     }
-
-    private void returnData(int end){
+//    private void returnData(int end){
+//        progressBar.setVisibility(View.VISIBLE);
+//        Query databaseQuery = reference
+//                .limitToFirst(end);
+//
+//        databaseQuery.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                bid_posts.clear();
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    Bid_post bid_post = snapshot.getValue(Bid_post.class);
+//                    bid_posts.add(bid_post);
+//
+//                    //deleteBid(snapshot);
+//                    if (!dateIsValid(bid_post.getEndTime(), bid_post.getEndDate())) {
+//
+//
+//
+//
+//                    }
+//                }
+//                adapter.notifyDataSetChanged();
+//                progressBar.setVisibility(View.GONE);
+//                if( bid_posts.isEmpty() ){
+//                    empty_text.setVisibility(View.VISIBLE);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                Log.w(TAG, "Failed to read value.", error.toException());
+//                progressBar.setVisibility(View.GONE);
+//
+//            }
+//        });
+//    }
+    private void returnData(){
         progressBar.setVisibility(View.VISIBLE);
-        Query databaseQuery = reference
-                .limitToFirst(end);
+        Query databaseQuery = reference;
 
         databaseQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -132,13 +167,16 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Bid_post bid_post = snapshot.getValue(Bid_post.class);
                     bid_posts.add(bid_post);
-                    adapter.notifyDataSetChanged();
+
+                    //deleteBid(snapshot);
                     if (!dateIsValid(bid_post.getEndTime(), bid_post.getEndDate())) {
 
-                        deleteBid(snapshot);
+
+
 
                     }
                 }
+                adapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
                 if( bid_posts.isEmpty() ){
                     empty_text.setVisibility(View.VISIBLE);
@@ -177,7 +215,8 @@ public class HomeFragment extends Fragment {
                     User user_database = (User) snapshot.getValue(User.class);
                     if(user_database.getUsername().trim().equals(username.trim())){
                         user = user_database;
-                        returnData(limit);
+//                        returnData(limit);
+                        returnData();
                         adapter = new BidListAdapter(
                                 getContext(),
                                 R.layout.bid_adapter,bid_posts,
@@ -194,60 +233,68 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+    private void setWinner(String _winner){
+//        reference_users.equalTo(username,"username");
+        reference_users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    User user_database = (User) snapshot.getValue(User.class);
+                    if(user_database.getUsername().trim().equals(_winner.trim())){
+                        winner = user_database;
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void setOwner(String _owner){
+//        reference_users.equalTo(username,"username");
+        reference_users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    User user_database = (User) snapshot.getValue(User.class);
+                    if(user_database.getUsername().trim().equals(_owner.trim())){
+                        owner = user_database;
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
     private void deleteBid(DataSnapshot snapshot) {
+
         Bid_post bid_post = snapshot.getValue(Bid_post.class);
-        snapshot.getRef().setValue(null);
-        //NOTIFICAO E ENVIAR EMAIL
-        String notification = bid_post.getTitle() + "has expired" ;
-        owner.addNotifications(notification);
-        returnWinner(bid_post.getHighest_bidder());
-        owner.addBalance(Double.parseDouble(bid_post.getHighest_bid()));
-        winner.deductBalance(Double.parseDouble(bid_post.getHighest_bid()));
-        reference_users.child(owner.getUsername()).setValue(owner);
-        reference_users.child(winner.getUsername()).setValue(winner);
-    }
+        setWinner(bid_post.getHighest_bidder());
+        setOwner(bid_post.getOwner());
+        if( owner != null && winner!=null ){
+            //NOTIFICAO E ENVIAR EMAIL
+            String notification = bid_post.getTitle() + "has expired" ;
+            owner.addNotifications(notification);
+            owner.addBalance(Double.parseDouble(bid_post.getHighest_bid()));
+            reference_users.child(owner.getUsername()).setValue(owner);
+            winner.deductBalance(Double.parseDouble(bid_post.getHighest_bid()));
+            reference_users.child(winner.getUsername()).setValue(winner);
+            //snapshot.getRef().setValue(null);
+        }
 
-    private void returnOwner(String value){
-        reference_users.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user_database = (User) snapshot.getValue(User.class);
-                    if(user_database.getUsername().trim().equals(value.trim())){
-                        owner = snapshot.getValue(User.class);
-                        break;
-                    }
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
 
-    private void returnWinner(String value){
 
-        reference_users.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user_database = (User) snapshot.getValue(User.class);
-                    if(user_database.getUsername().trim().equals(value.trim())){
-                        winner = snapshot.getValue(User.class);
-                        break;
-                    }
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 }

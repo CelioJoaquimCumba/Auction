@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DatabaseReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -88,7 +89,8 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
             }
         });
         //TODO: image uri fix this
-        bid_image.setImageURI(Uri.parse(image_bid));
+//        bid_image.setImageURI(Uri.parse(image_bid));
+        Picasso.get().load(image_bid).fit().placeholder(R.drawable.ic_add_post).into(bid_image);
         tvUsername.setText(username);
         tvTitle.setText(title);
         tvDescription.setText(description);
