@@ -1,7 +1,11 @@
 package mz.ac.isutc.i33.auction;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 import com.google.firebase.database.DatabaseReference;
 import com.squareup.picasso.Picasso;
@@ -21,6 +26,7 @@ import java.util.ArrayList;
 
 import mz.ac.isutc.i33.auction.models.Bid.Bid;
 import mz.ac.isutc.i33.auction.models.Bid.Bid_post;
+import mz.ac.isutc.i33.auction.models.JavaMailAPI;
 import mz.ac.isutc.i33.auction.models.User;
 
 public class BidListAdapter extends ArrayAdapter<Bid_post> {
@@ -78,6 +84,8 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
 //                        user.deductBalance( Double.parseDouble(bid_proposal_text) );
 //                        reference_users.child(user.getUsername()).setValue(user);
                         Toast.makeText(getContext(), "Saldo insuficiente para fazer a transaccao!", Toast.LENGTH_SHORT).show();
+                        JavaMailAPI javaMailAPI = new JavaMailAPI(context, "ccaducarlos@gmail.com", "ABOUT BID", "Saldo insuficiente para fazer a transaccao!");
+                        javaMailAPI.execute();
                     } else {
                             bid_post.addBid(new Bid(user.getUsername(),Double.parseDouble(bid_proposal_text),bid_post.getId()));
                             reference_bid_posts.child(bid_post.getCreatedDate().toString()).setValue(bid_post);
@@ -96,11 +104,13 @@ public class BidListAdapter extends ArrayAdapter<Bid_post> {
         tvDescription.setText(description);
         tvHighestBid.setText(highest_bid);
         tvHighestBidder.setText(highest_bidder);
-
-
-
-
         return convertView;
+
+    }
+
+
+
+    private  void  permission(){
 
     }
 

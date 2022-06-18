@@ -20,7 +20,7 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_new_bid.xml" value="0.19375" />
-        <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/bid_adapter.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/home_page.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/search_page.xml" value="0.19375" />

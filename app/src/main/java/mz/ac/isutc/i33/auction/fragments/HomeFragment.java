@@ -2,9 +2,14 @@ package mz.ac.isutc.i33.auction.fragments;
 
 import static android.content.ContentValues.TAG;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +24,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import mz.ac.isutc.i33.auction.MainActivity;
 import mz.ac.isutc.i33.auction.models.Bid.Bid;
 import mz.ac.isutc.i33.auction.models.Bid.Bid_post;
 import mz.ac.isutc.i33.auction.BidListAdapter;
@@ -40,7 +47,8 @@ import mz.ac.isutc.i33.auction.models.User;
 
 public class HomeFragment extends Fragment {
     ListView listView;
-
+    User winner;
+    User owner;
     FirebaseDatabase database;
     DatabaseReference reference, reference_users;
     String username;
@@ -50,7 +58,8 @@ public class HomeFragment extends Fragment {
     ProgressBar progressBar;
     boolean load = true;
     TextView empty_text;
-    User user,owner,winner;
+    User user;
+    int cont = 0;
 
     public HomeFragment(String username) {
         this.username = username;
@@ -85,31 +94,30 @@ public class HomeFragment extends Fragment {
 
 
         returnUser();
-        returnData();
-//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//
-//            }
-//
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                int counts[] = {firstVisibleItem, visibleItemCount, totalItemCount};
-//
-//                if( load &&  firstVisibleItem + visibleItemCount == totalItemCount ){
-//                    Toast.makeText(getContext(), "1", Toast.LENGTH_SHORT).show();
-//                    start = end;
-//                    end = start + limit;
-//                    returnData(end);
-//                    load = false;
-//                    //TODO
-//                }
-//                if ( !load && firstVisibleItem + visibleItemCount != totalItemCount ){
-//                    load = true;
-//                    Toast.makeText(getContext(), "2", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                int counts[] = {firstVisibleItem, visibleItemCount, totalItemCount};
+
+                if( load &&  firstVisibleItem + visibleItemCount == totalItemCount ){
+                    Toast.makeText(getContext(), "1", Toast.LENGTH_SHORT).show();
+                    start = end;
+                    end = start + limit;
+                    returnData(end);
+                    load = false;
+                    //TODO
+                }
+                if ( !load && firstVisibleItem + visibleItemCount != totalItemCount ){
+                    load = true;
+                    Toast.makeText(getContext(), "2", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
 
@@ -119,46 +127,11 @@ public class HomeFragment extends Fragment {
 
         return rootView;
     }
-//    private void returnData(int end){
-//        progressBar.setVisibility(View.VISIBLE);
-//        Query databaseQuery = reference
-//                .limitToFirst(end);
-//
-//        databaseQuery.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                bid_posts.clear();
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    Bid_post bid_post = snapshot.getValue(Bid_post.class);
-//                    bid_posts.add(bid_post);
-//
-//                    //deleteBid(snapshot);
-//                    if (!dateIsValid(bid_post.getEndTime(), bid_post.getEndDate())) {
-//
-//
-//
-//
-//                    }
-//                }
-//                adapter.notifyDataSetChanged();
-//                progressBar.setVisibility(View.GONE);
-//                if( bid_posts.isEmpty() ){
-//                    empty_text.setVisibility(View.VISIBLE);
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                Log.w(TAG, "Failed to read value.", error.toException());
-//                progressBar.setVisibility(View.GONE);
-//
-//            }
-//        });
-//    }
-    private void returnData(){
+
+    private void returnData(int end){
         progressBar.setVisibility(View.VISIBLE);
-        Query databaseQuery = reference;
+        Query databaseQuery = reference
+                .limitToFirst(end);
 
         databaseQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -166,18 +139,15 @@ public class HomeFragment extends Fragment {
                 bid_posts.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Bid_post bid_post = snapshot.getValue(Bid_post.class);
-                    bid_posts.add(0,bid_post);
-
-                    //deleteBid(snapshot);
-                    //snapshot.getRef().setValue(null);
+                    bid_posts.add(bid_post);
+                    adapter.notifyDataSetChanged();
                     if (!dateIsValid(bid_post.getEndTime(), bid_post.getEndDate())) {
 
-
-
-
+                        //deleteBid(snapshot);
+                        //returnOwner(bid_post.getOwner());
+                    deleteBid(bid_post);
                     }
                 }
-                adapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
                 if( bid_posts.isEmpty() ){
                     empty_text.setVisibility(View.VISIBLE);
@@ -216,8 +186,7 @@ public class HomeFragment extends Fragment {
                     User user_database = (User) snapshot.getValue(User.class);
                     if(user_database.getUsername().trim().equals(username.trim())){
                         user = user_database;
-//                        returnData(limit);
-                        returnData();
+                        returnData(limit);
                         adapter = new BidListAdapter(
                                 getContext(),
                                 R.layout.bid_adapter,bid_posts,
@@ -234,68 +203,117 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-    private void setWinner(String _winner){
-//        reference_users.equalTo(username,"username");
-        reference_users.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user_database = (User) snapshot.getValue(User.class);
-                    if(user_database.getUsername().trim().equals(_winner.trim())){
-                        winner = user_database;
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-    private void setOwner(String _owner){
-//        reference_users.equalTo(username,"username");
-        reference_users.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user_database = (User) snapshot.getValue(User.class);
-                    if(user_database.getUsername().trim().equals(_owner.trim())){
-                        owner = user_database;
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 
     private void deleteBid(DataSnapshot snapshot) {
-
         Bid_post bid_post = snapshot.getValue(Bid_post.class);
-        setWinner(bid_post.getHighest_bidder());
-        setOwner(bid_post.getOwner());
-        if( owner != null && winner!=null ){
-            //NOTIFICAO E ENVIAR EMAIL
-            String notification = bid_post.getTitle() + "has expired" ;
-            owner.addNotifications(notification);
+        //snapshot.getRef().removeValue();
+        snapshot.getRef().setValue(null);
+        //NOTIFICAO E ENVIAR EMAIL
+        returnOwneer(bid_post.getOwner());
+        returnWinner(bid_post.getHighest_bidder());
+        if (owner != null && winner != null) {
             owner.addBalance(Double.parseDouble(bid_post.getHighest_bid()));
-            reference_users.child(owner.getUsername()).setValue(owner);
             winner.deductBalance(Double.parseDouble(bid_post.getHighest_bid()));
+            reference_users.child(owner.getUsername()).setValue(owner);
             reference_users.child(winner.getUsername()).setValue(winner);
-            //snapshot.getRef().setValue(null);
+            sendMSG("Congratulations" + bid_post.getHighest_bidder() + "you are the winner of " + bid_post.getTitle(), winner.getPhoneNumber());
         }
+        String notification = bid_post.getTitle() + "has expired" ;
+
+        //returnOwner(bid_post.getOwner());
+
+        owner.addNotifications(notification);
+
 
 
     }
 
+    private void deleteBid(Bid_post bid_post){
+
+        reference_users.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    User user_database = (User) snapshot.getValue(User.class);
+                    if (user_database.getUsername().trim().equals(bid_post.getHighest_bidder().trim())){
+                        winner = snapshot.getValue(User.class);
+                    }
+                    if(user_database.getUsername().trim().equals(bid_post.getOwner().trim())){
+                        owner = snapshot.getValue(User.class);
+
+                    }
+                    if (owner != null && winner != null){
+                        if (cont == 0){
+                            owner.addBalance(Double.parseDouble(bid_post.getHighest_bid()));
+//                        winner.deductBalance(Double.parseDouble(bid_post.getHighest_bid()));
+                            sendMSG("Congratulations" + bid_post.getHighest_bidder() + "you are the winner of " + bid_post.getTitle(), winner.getPhoneNumber());
+//                        database.getReference("users").child(owner.getUsername()).setValue(owner);
+//                        database.getReference("users").child(winner.getUsername()).setValue(winner);
+                            cont++;
+                            break;
+                        }
+//
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
+    private void returnWinner(String value){
 
+        reference_users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    User user_database = (User) snapshot.getValue(User.class);
+                    if(user_database.getUsername().trim().equals(value.trim())){
+                        winner = snapshot.getValue(User.class);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void returnOwneer(String value){
+
+        reference_users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    User user_database = (User) snapshot.getValue(User.class);
+                    //if(user_database.getUsername().trim().equals(value.trim())){
+                    winner = snapshot.getValue(User.class);
+                    //break;
+                    //}
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void sendMSG(String message, String phoneNumber){
+        Activity activity = (Activity) this.getActivity();
+        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS}, PackageManager.PERMISSION_GRANTED);
+        SmsManager mySmsManager = SmsManager.getDefault();
+        mySmsManager.sendTextMessage(phoneNumber,null, message, null, null);
+        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS}, PackageManager.PERMISSION_GRANTED);
+    }
 }

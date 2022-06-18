@@ -30,7 +30,7 @@ import mz.ac.isutc.i33.auction.controllers.InternetController;
 import mz.ac.isutc.i33.auction.models.User;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
-    EditText username, email, password, passwordConfirmation;
+    EditText username, email, password, passwordConfirmation, phoneNumber;
     Button register_button;
     Object system_service;
 
@@ -42,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         email = findViewById(R.id.email_register);
         password = findViewById(R.id.password_register);
         passwordConfirmation = findViewById(R.id.confirmpassword_register);
+        phoneNumber = findViewById(R.id.phoneNumber_register);
 
         register_button = findViewById(R.id.register_button_register);
 
@@ -172,6 +173,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             String username_txt = username.getText().toString().trim();
             String email_txt = email.getText().toString().trim();
             String password_txt = password.getText().toString().trim();
+            String phoneNumber_txt = phoneNumber.getText().toString().trim();
             //String passwordConfirmation_txt = passwordConfirmation.getText().toString();
             if(validFields(
                     username,
@@ -191,7 +193,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         }
                         else{
                             //dont exist
-                            User _user = new User(username_txt,email_txt,password_txt);
+                            User _user = new User(username_txt,email_txt,password_txt, phoneNumber_txt);
                             reference.child(username_txt).setValue(_user);
                             save(username);
                             Intent intent = new Intent(RegisterActivity.this, MainActivity.class);

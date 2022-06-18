@@ -10,12 +10,14 @@ public class User {
     private ArrayList<String> notifications;
     private int followers_count;
     private int following_count;
+    private String phoneNumber;
+
     public User(){
 
     }
 
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password, String phoneNumber) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -27,8 +29,16 @@ public class User {
         this.following_count = followings.size();
         this.followers_count = followers.size();
         this.notifications = new ArrayList<>();
+        this.phoneNumber = phoneNumber;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
     public String getUsername() {
         return username;
     }

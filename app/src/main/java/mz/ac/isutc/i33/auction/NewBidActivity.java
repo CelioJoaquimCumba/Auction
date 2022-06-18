@@ -392,4 +392,5 @@ public class NewBidActivity extends AppCompatActivity implements View.OnClickLis
             timePickerDialog.show();
         }
     }
+
 }
