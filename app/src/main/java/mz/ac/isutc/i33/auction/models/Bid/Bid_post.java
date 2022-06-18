@@ -25,6 +25,7 @@ public class Bid_post {
     String highest_bidder;
     String highest_bid;
     String imageUri;
+    boolean show;
 
 
 
@@ -37,7 +38,13 @@ public class Bid_post {
     }
 
 
+    public boolean isShow() {
+        return show;
+    }
 
+    public void setShow(boolean show) {
+        this.show = show;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Bid_post(String id, String owner, String title, String description
@@ -54,9 +61,11 @@ public class Bid_post {
         this.endTime = endTime;
         this.bids = bids;
         this.imageUri = imageUri;
+        this.show = true;
         sort();
         this.highest_bidder = bids.get( bids.size()-1 ).username;
         this.highest_bid = bids.get( bids.size() -1 ).bid.toString();
+
 
 
     }

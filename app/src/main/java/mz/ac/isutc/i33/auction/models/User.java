@@ -66,12 +66,12 @@ public class User {
     public double getBalance() {
         return balance;
     }
-    public boolean deductBalance(Double value){
+    public void deductBalance(Double value){
         if( balance >= value ){
             balance = balance - value;
-            return true;
+//            return true;
         }
-        return false;
+//        return false;
     }
     public ArrayList<String> getFollowers() {
         return followers;
@@ -83,7 +83,7 @@ public class User {
         followers.add(user);
     }
     public void addBalance(double value){
-        balance = balance + 1;
+        balance = balance + value;
     }
     public void addFollower(){
         followers_count++;

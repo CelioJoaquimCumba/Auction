@@ -139,14 +139,17 @@ public class HomeFragment extends Fragment {
                 bid_posts.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Bid_post bid_post = snapshot.getValue(Bid_post.class);
-                    bid_posts.add(bid_post);
-                    adapter.notifyDataSetChanged();
-                    if (!dateIsValid(bid_post.getEndTime(), bid_post.getEndDate())) {
-
-                        //deleteBid(snapshot);
-                        //returnOwner(bid_post.getOwner());
-                    deleteBid(bid_post);
+                    if(bid_post.isShow()){
+                        bid_posts.add(0,bid_post);
+                        adapter.notifyDataSetChanged();
+                        if (!dateIsValid(bid_post.getEndTime(), bid_post.getEndDate())) {
+                            Toast.makeText(getContext(), "Date is valid:"+dateIsValid(bid_post.getEndTime(),bid_post.getEndDate()), Toast.LENGTH_SHORT).show();
+                            //deleteBid(snapshot);
+                            //returnOwner(bid_post.getOwner());
+                            deleteBid(snapshot);
+                        }
                     }
+
                 }
                 progressBar.setVisibility(View.GONE);
                 if( bid_posts.isEmpty() ){
@@ -205,32 +208,32 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void deleteBid(DataSnapshot snapshot) {
-        Bid_post bid_post = snapshot.getValue(Bid_post.class);
-        //snapshot.getRef().removeValue();
-        snapshot.getRef().setValue(null);
-        //NOTIFICAO E ENVIAR EMAIL
-        returnOwneer(bid_post.getOwner());
-        returnWinner(bid_post.getHighest_bidder());
-        if (owner != null && winner != null) {
-            owner.addBalance(Double.parseDouble(bid_post.getHighest_bid()));
-            winner.deductBalance(Double.parseDouble(bid_post.getHighest_bid()));
-            reference_users.child(owner.getUsername()).setValue(owner);
-            reference_users.child(winner.getUsername()).setValue(winner);
-            sendMSG("Congratulations" + bid_post.getHighest_bidder() + "you are the winner of " + bid_post.getTitle(), winner.getPhoneNumber());
-        }
-        String notification = bid_post.getTitle() + "has expired" ;
+//    private void deleteBid(DataSnapshot snapshot) {
+//        Bid_post bid_post = snapshot.getValue(Bid_post.class);
+//        //snapshot.getRef().removeValue();
+//        snapshot.getRef().setValue(null);
+//        //NOTIFICAO E ENVIAR EMAIL
+//        returnOwneer(bid_post.getOwner());
+//        returnWinner(bid_post.getHighest_bidder());
+//        if (owner != null && winner != null) {
+//            owner.addBalance(Double.parseDouble(bid_post.getHighest_bid()));
+//            winner.deductBalance(Double.parseDouble(bid_post.getHighest_bid()));
+//            reference_users.child(owner.getUsername()).setValue(owner);
+//            reference_users.child(winner.getUsername()).setValue(winner);
+//            sendMSG("Congratulations" + bid_post.getHighest_bidder() + "you are the winner of " + bid_post.getTitle(), winner.getPhoneNumber());
+//        }
+//        String notification = bid_post.getTitle() + "has expired" ;
+//
+//        //returnOwner(bid_post.getOwner());
+//
+//        owner.addNotifications(notification);
+//
+//
+//
+//    }
 
-        //returnOwner(bid_post.getOwner());
-
-        owner.addNotifications(notification);
-
-
-
-    }
-
-    private void deleteBid(Bid_post bid_post){
-
+    private void deleteBid(DataSnapshot dataSnapshot){
+        Bid_post bid_post = dataSnapshot.getValue(Bid_post.class);
         reference_users.addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -248,11 +251,17 @@ public class HomeFragment extends Fragment {
                     if (owner != null && winner != null){
                         if (cont == 0){
                             owner.addBalance(Double.parseDouble(bid_post.getHighest_bid()));
-//                        winner.deductBalance(Double.parseDouble(bid_post.getHighest_bid()));
+                            winner.deductBalance(Double.parseDouble(bid_post.getHighest_bid()));
+                            String a = bid_post.getHighest_bid();
                             sendMSG("Congratulations" + bid_post.getHighest_bidder() + "you are the winner of " + bid_post.getTitle(), winner.getPhoneNumber());
-//                        database.getReference("users").child(owner.getUsername()).setValue(owner);
-//                        database.getReference("users").child(winner.getUsername()).setValue(winner);
+                            reference_users.child(owner.getUsername()).setValue(owner);
+                            reference_users.child(winner.getUsername()).setValue(winner);
+                            //dataSnapshot.getRef().setValue(null);
+                            //dataSnapshot.getRef().removeValue();
+                            bid_post.setShow(false);
+                            database.getReference("bidPosts").child(bid_post.getCreatedDate().toString()).setValue(bid_post);
                             cont++;
+                            returnData(limit);
                             break;
                         }
 //
